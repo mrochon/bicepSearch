@@ -1,11 +1,11 @@
+targetScope = 'resourceGroup'
+
 metadata description = 'Creates an Azure AI Search instance.'
 param name string
 param location string = resourceGroup().location
 param tags object = {}
 
-param sku object = {
-  name: 'standard'
-}
+param sku string = 'standard'
 
 param authOptions object = {}
 param disableLocalAuth bool = false
@@ -66,11 +66,11 @@ resource search 'Microsoft.Search/searchServices@2024-06-01-preview' = {
     replicaCount: replicaCount
     semanticSearch: semanticSearch
   }
-  sku: sku
+  sku: { name: sku }
 }
 
 output id string = search.id
 output endpoint string = 'https://${search_name}.search.windows.net/'
 output name string = search_name
-output searchIdentityId string = searchIdentityProvider.id
-output searchIdentityPrincipalId string = searchIdentityProvider.properties.principalId
+output identityId string = searchIdentityProvider.id
+output identityPrincipalId string = searchIdentityProvider.properties.principalId

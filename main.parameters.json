@@ -3,10 +3,25 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "projectName": {
-      "value": "bicepsearch"
+      "value": "bicepsearch2"
     },
     "location": {
       "value": "eastus"
+    },
+    "searchSkuName": {
+      "value": "standard"
+    },
+    "searchReplicaCount": {
+      "value": 1
+    },
+    "searchPartitionCount": {
+      "value": 1
+    },
+    "searchPublicNetworkAccess": {
+      "value": "enabled"
+    },
+    "searchDisableLocalAuth": {
+      "value": false
     }
   }
 }
