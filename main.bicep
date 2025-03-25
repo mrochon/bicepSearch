@@ -89,7 +89,6 @@ module storage 'services/storage.bicep' = {
     queues: []
     shareDeleteRetentionPolicy: {}
     supportsHttpsTrafficOnly: true
-    searchManagedIdentityId: searchService.outputs.identityId
     searchManagedIdentityPrincipalId: searchService.outputs.identityPrincipalId
   }
 }

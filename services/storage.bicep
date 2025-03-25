@@ -36,7 +36,6 @@ param networkAcls object = {
 param publicNetworkAccess string = 'Enabled'
 param sku object = { name: 'Standard_LRS' }
 
-param searchManagedIdentityId string
 param searchManagedIdentityPrincipalId string
 
 resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
