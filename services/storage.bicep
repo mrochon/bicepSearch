@@ -74,38 +74,38 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
     }]
   }
 
-  resource fileServices 'fileServices' = if (!empty(files)) {
-    name: 'default'
-    properties: {
-      cors: {
-        corsRules: corsRules
-      }
-      shareDeleteRetentionPolicy: shareDeleteRetentionPolicy
-    }
-  }
+  // resource fileServices 'fileServices' = if (!empty(files)) {
+  //   name: 'default'
+  //   properties: {
+  //     cors: {
+  //       corsRules: corsRules
+  //     }
+  //     shareDeleteRetentionPolicy: shareDeleteRetentionPolicy
+  //   }
+  // }
 
-  resource queueServices 'queueServices' = if (!empty(queues)) {
-    name: 'default'
-    properties: {
+  // resource queueServices 'queueServices' = if (!empty(queues)) {
+  //   name: 'default'
+  //   properties: {
 
-    }
-    resource queue 'queues' = [for queue in queues: {
-      name: queue.name
-      properties: {
-        metadata: {}
-      }
-    }]
-  }
+  //   }
+  //   resource queue 'queues' = [for queue in queues: {
+  //     name: queue.name
+  //     properties: {
+  //       metadata: {}
+  //     }
+  //   }]
+  // }
 
-  resource tableServices 'tableServices' = if (!empty(tables)) {
-    name: 'default'
-    properties: {}
-  }
+  // resource tableServices 'tableServices' = if (!empty(tables)) {
+  //   name: 'default'
+  //   properties: {}
+  // }
 }
 
 resource search2StorageRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(storage.id, searchManagedIdentityPrincipalId, '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')
-  scope: storage
+  name: guid('searchcontainer', searchManagedIdentityPrincipalId, '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')
+  scope: storage::blobServices::container[0]
   properties: {
     //delegatedManagedIdentityResourceId: searchManagedIdentityId
     description: 'Blob Reader role assignment for Search service'

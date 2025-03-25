@@ -1,7 +1,12 @@
 ## Deployment
 
 ```
-az deployment sub create --location 'eastus' --name 'searchbicep2' --paramaters main.parameters.json --template-file main.bicep 
+az deployment sub create --name bicespsearch2 \
+  --template-file main.bicep \
+  --parameters @main.parameters.json \
+  --location 'eastus' \
+  --subscription '7cee9002-39e6-44f8-a673-6f8680f8f4ad'
+
 ```
 
 ```
