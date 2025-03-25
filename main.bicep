@@ -146,5 +146,13 @@ module analytics 'services/dashboard.bicep' = {
   }
 }
 
+module setupIndex 'scripts/searchSetup.bicep' = {
+  scope: rg
+  name: 'setupIndex'
+  params: {
+    location: location
+  }
+}
+
 
 output aiEndpoint string = ai.outputs.endpoint
