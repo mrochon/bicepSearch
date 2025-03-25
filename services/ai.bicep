@@ -5,7 +5,6 @@ param tags object = {}
 @description('The custom subdomain name used to access the API. Defaults to the value of the name parameter.')
 param customSubDomainName string = name
 param disableLocalAuth bool = false
-param deployments array = []
 param kind string = 'OpenAI'
 
 @allowed([ 'Enabled', 'Disabled' ])
@@ -21,6 +20,22 @@ param networkAcls object = empty(allowedIpRules) ? {
   ipRules: allowedIpRules
   defaultAction: 'Deny'
 }
+
+@description('Model deployments for OpenAI')
+@minLength(1)
+param deployments array = [
+  {
+    name: 'text-embedding-3-small'
+    model: {
+      format: 'OpenAI'
+      name: 'text-embedding-3-small'
+      version: '1'
+    }
+    capacity: 150
+  }
+]
+
+param searchManagedIdentityPrincipalId string
 
 resource account 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   name: name
@@ -42,13 +57,25 @@ resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01
   name: deployment.name
   properties: {
     model: deployment.model
-    raiPolicyName: deployment.?raiPolicyName ?? null
+    raiPolicyName: null
   }
-  sku: deployment.?sku ?? {
+  sku: {
     name: 'Standard'
-    capacity: 20
+    capacity: deployment.capacity
   }
 }]
+
+resource search2EmbeddingRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('embedding', searchManagedIdentityPrincipalId, '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd')
+  scope: deployment[0]
+  properties: {
+    //delegatedManagedIdentityResourceId: searchManagedIdentityId
+    description: 'Cognitive Services OpenAI User'
+    principalId: searchManagedIdentityPrincipalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd')
+  }
+}
 
 output endpoint string = account.properties.endpoint
 output endpoints object = account.properties.endpoints

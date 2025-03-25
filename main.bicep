@@ -101,6 +101,7 @@ module ai 'services/ai.bicep' = {
     tags: tags
     location: location
     name: 'ai-${uniqueName}'
+    searchManagedIdentityPrincipalId: searchService.outputs.identityPrincipalId
   }
 }
 
