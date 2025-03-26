@@ -54,6 +54,10 @@ param searchPublicNetworkAccess string = 'enabled'
 @description('Whether to disable local authentication')
 param searchDisableLocalAuth bool = false
 
+param containers array = [
+  'searchdata'
+]
+
 var uniqueName = toLower(uniqueString(subscription().id, projectName, location))
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -69,11 +73,7 @@ module storage 'services/storage.bicep' = {
     tags: tags
     location: location
     name: uniqueName
-    containers: [
-      {
-        name: 'searchdata'
-      }
-    ]
+    containers: containers
     accessTier: 'Hot'
     allowBlobPublicAccess: false
     allowCrossTenantReplication: true
@@ -112,7 +112,7 @@ module searchService 'services/search.bicep' = {
   params: {
     tags: tags
     location: location
-    name: 'storage${uniqueName}'
+    name: 'search-${uniqueName}'
     authOptions: {}
     disableLocalAuth: searchDisableLocalAuth
     disabledDataExfiltrationOptions: []
@@ -128,6 +128,7 @@ module searchService 'services/search.bicep' = {
     publicNetworkAccess: searchPublicNetworkAccess
     replicaCount: searchReplicaCount
     sku: searchSkuName
+    scriptIdentityPrincipalId: setupIndex.outputs.scriptIdentityPrincipalId
   }
 }
 
@@ -151,8 +152,12 @@ module setupIndex 'scripts/searchSetup.bicep' = {
   name: 'setupIndex'
   params: {
     location: location
+    uniqueName: uniqueName
+    searchName: 'search-${uniqueName}'
+    dataSourceName: 'sourceData'
+    storageAcctName: 'storage${uniqueName}'
+    containerName: containers[0]
   }
 }
-
 
 output aiEndpoint string = ai.outputs.endpoint

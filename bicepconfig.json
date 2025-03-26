@@ -9,10 +9,10 @@
         }
       }
     }
-  }
+  },
   
-  // "experimentalFeaturesEnabled": {
-  //   "resourceTypedParamsAndOutputs": true
-  // }
+  "experimentalFeaturesEnabled": {
+    "resourceTypedParamsAndOutputs": true
+  }
 
 }

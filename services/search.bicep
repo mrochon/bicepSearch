@@ -36,6 +36,8 @@ param replicaCount int = 1
 ])
 param semanticSearch string = 'free'
 
+param scriptIdentityPrincipalId string
+
 var search_name = 'search-${name}'
 
 resource searchIdentityProvider 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' = {
@@ -67,6 +69,18 @@ resource search 'Microsoft.Search/searchServices@2024-06-01-preview' = {
     semanticSearch: semanticSearch
   }
   sku: { name: sku }
+}
+
+resource scriptRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('script', scriptIdentityPrincipalId, '7ca78c08-252a-4471-8644-bb5ff32d4ba0')
+  scope: search
+  properties: {
+    //delegatedManagedIdentityResourceId: searchManagedIdentityId
+    description: 'Search service contributor'
+    principalId: scriptIdentityPrincipalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '7ca78c08-252a-4471-8644-bb5ff32d4ba0')
+  }
 }
 
 output id string = search.id
