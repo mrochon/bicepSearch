@@ -79,12 +79,9 @@ module storage 'services/storage.bicep' = {
     defaultToOAuthAuthentication: false
     deleteRetentionPolicy: {}
     dnsEndpointType: 'Standard'
-    files: []
     isHnsEnabled: false
     kind: 'StorageV2'
     minimumTlsVersion: 'TLS1_2'
-    queues: []
-    shareDeleteRetentionPolicy: {}
     supportsHttpsTrafficOnly: true
     searchManagedIdentityPrincipalId: searchService.outputs.identityPrincipalId
   }

@@ -20,14 +20,10 @@ param defaultToOAuthAuthentication bool = false
 param deleteRetentionPolicy object = {}
 @allowed([ 'AzureDnsZone', 'Standard' ])
 param dnsEndpointType string = 'Standard'
-param files array = []
 param isHnsEnabled bool = false
 param kind string = 'StorageV2'
 param minimumTlsVersion string = 'TLS1_2'
-param queues array = []
-param shareDeleteRetentionPolicy object = {}
 param supportsHttpsTrafficOnly bool = true
-param tables array = []
 param networkAcls object = {
   bypass: 'AzureServices'
   defaultAction: 'Allow'
@@ -38,8 +34,10 @@ param sku object = { name: 'Standard_LRS' }
 
 param searchManagedIdentityPrincipalId string
 
+var storage_name = 'storage${name}'
+
 resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
-  name: 'storage${name}'
+  name: storage_name
   location: location
   tags: tags
   kind: kind
@@ -67,7 +65,7 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
       deleteRetentionPolicy: deleteRetentionPolicy
     }
     resource container 'containers' = [for container in containers: {
-      name: container.name
+      name: container
       properties: {
         publicAccess: 'None'
       }

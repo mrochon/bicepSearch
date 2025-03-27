@@ -109,30 +109,50 @@ $headers = @{
   'Authorization' = "Bearer $($token.Token)"
   'Content-Type' = 'application/json'
 }
-$body = @"
-{
-      {
-        "@odata.context": "https://$($args[1]).search.windows.net/`$metadata#datasources/`$entity",
-        "@odata.etag": "\"0x8DC59AEA85B6E01\"",
-        "name": "$($args[2])",
-        "description": "Tech documents.",
-        "type": "azureblob",
-        "credentials": {
-          "connectionString": "ResourceId=/subscriptions/$($args[5])/resourceGroups/$($args[0])/providers/Microsoft.Storage/storageAccounts/$($args[3]);"
-        },
-        "container": {
-          "name": "$($args[4])",
-          "query": ""
-        }
-      }
+$body = @{
+  name = $env:dataSourceName
+  description = "Tech documents."
+  type = "azureblob"
+  credentials = @{
+    connectionString = "ResourceId=/subscriptions/$($env:subscriptionId)/resourceGroups/$($env:rgName)/providers/Microsoft.Storage/storageAccounts/$($env:storageAcctName);"
+  }
+  container = @{
+    name = $env:containerName
+    query = ""
+  }
 }
-"@
-$url="https://$($args[1]).search.windows.net/datasources('$($args[2])')?allowIndexDowntime=True&api-version=2024-07-01"
-Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
+$jsonBody = $body | ConvertTo-Json -Depth 10
+$url="https://$($env:searchName).search.windows.net/datasources('$($env:dataSourceName)')?allowIndexDowntime=True&api-version=2024-07-01"
+$resp = Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $jsonBody
     '''
     timeout: 'PT30M'
     cleanupPreference: 'OnSuccess'
-    arguments: '${resourceGroup().name} ${search_name} ${dataSourceName} ${storageAcctName} ${containerName} ${subscription().subscriptionId}'
+    environmentVariables: [
+      {
+        name: 'rgName'
+        value: resourceGroup().name
+      }
+      {
+        name: 'searchName'
+        value: search_name
+      }
+      {
+        name: 'dataSourceName'
+        value: dataSourceName
+      }
+      {
+        name: 'storageAcctName'
+        value: storageAcctName
+      }
+      {
+        name: 'containerName'
+        value: containerName
+      }
+      {
+        name: 'subscriptionId'
+        value: subscription().subscriptionId
+      }
+    ]
     retentionInterval: 'P1D'
   }
 }

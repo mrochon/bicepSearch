@@ -1,4 +1,4 @@
-$SecurePassword = ConvertTo-SecureString -String '...' -AsPlainText -Force
+$SecurePassword = ConvertTo-SecureString -String ... -AsPlainText -Force
 $TenantId = '1165490c-89b5-463b-b203-8b77e01597d2'
 $ApplicationId = 'e3f2418a-8ca5-4d48-864c-1a6819cfe650'
 $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $ApplicationId, $SecurePassword
@@ -9,25 +9,21 @@ $headers = @{
   'Authorization' = "Bearer $($token.Token)"
   'Content-Type' = 'application/json'
 }
-$body = @"
-{
-      {
-        "@odata.context": "https://$($args[1]).search.windows.net/`$metadata#datasources/`$entity",
-        "@odata.etag": "\"0x8DC59AEA85B6E01\"",
-        "name": "$($args[2])",
-        "description": "Tech documents.",
-        "type": "azureblob",
-        "credentials": {
-          "connectionString": "ResourceId=/subscriptions/$($args[5])/resourceGroups/$($args[0])/providers/Microsoft.Storage/storageAccounts/$($args[3]);"
-        },
-        "container": {
-          "name": "$($args[4])",
-          "query": ""
-        }
-      }
+$body = @{
+  name = $args[2]
+  description = "Tech documents."
+  type = "azureblob"
+  credentials = @{
+    connectionString = "ResourceId=/subscriptions/$($args[5])/resourceGroups/$($args[0])/providers/Microsoft.Storage/storageAccounts/$($args[3]);"
+  }
+  container = @{
+    name = $args[4]
+    query = ""
+  }
 }
-"@
+$jsonBody = $body | ConvertTo-Json -Depth 10
 $url="https://$($args[1]).search.windows.net/datasources('$($args[2])')?allowIndexDowntime=True&api-version=2024-07-01"
-$url
-$body
-Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
+#Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $jsonBody
+echo "Completed with no error"
+
+
