@@ -51,9 +51,6 @@ param searchPartitionCount int = 1
 ])
 param searchPublicNetworkAccess string = 'enabled'
 
-@description('Whether to disable local authentication')
-param searchDisableLocalAuth bool = false
-
 param containers array = [
   'searchdata'
 ]
@@ -112,9 +109,7 @@ module searchService 'services/search.bicep' = {
   params: {
     tags: tags
     location: location
-    name: 'search-${uniqueName}'
-    authOptions: {}
-    disableLocalAuth: searchDisableLocalAuth
+    uniqueName: uniqueName
     disabledDataExfiltrationOptions: []
     encryptionWithCmk: {
       enforcement: 'Unspecified'
@@ -128,7 +123,9 @@ module searchService 'services/search.bicep' = {
     publicNetworkAccess: searchPublicNetworkAccess
     replicaCount: searchReplicaCount
     sku: searchSkuName
-    scriptIdentityPrincipalId: setupIndex.outputs.scriptIdentityPrincipalId
+    dataSourceName: 'sourceData'
+    storageAcctName: 'storage${uniqueName}'
+    containerName: containers[0]
   }
 }
 
@@ -147,17 +144,17 @@ module analytics 'services/dashboard.bicep' = {
   }
 }
 
-module setupIndex 'scripts/searchSetup.bicep' = {
-  scope: rg
-  name: 'setupIndex'
-  params: {
-    location: location
-    uniqueName: uniqueName
-    searchName: 'search-${uniqueName}'
-    dataSourceName: 'sourceData'
-    storageAcctName: 'storage${uniqueName}'
-    containerName: containers[0]
-  }
-}
+// module setupIndex 'scripts/searchSetup.bicep' = {
+//   scope: rg
+//   name: 'setupIndex'
+//   params: {
+//     location: location
+//     uniqueName: uniqueName
+//     searchName: 'search-${uniqueName}'
+//     dataSourceName: 'sourceData'
+//     storageAcctName: 'storage${uniqueName}'
+//     containerName: containers[0]
+//   }
+// }
 
 output aiEndpoint string = ai.outputs.endpoint

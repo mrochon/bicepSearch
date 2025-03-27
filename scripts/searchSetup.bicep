@@ -30,13 +30,13 @@ $headers = @{
 $body = @"
 {
       {
-        "@odata.context": "https://$searchName.search.windows.net/$metadata#datasources/$entity",
+        "@odata.context": "https://$args[1].search.windows.net/`$metadata#datasources/`$entity",
         "@odata.etag": "\"0x8DC59AEA85B6E01\"",
-        "name": "$dataSourceName",
+        "name": "$args[2]",
         "description": "Tech documents.",
         "type": "azureblob",
         "credentials": {
-          "connectionString": "ResourceId=/subscriptions/$subscriptionId/resourceGroups/$rgName/providers/Microsoft.Storage/storageAccounts/$storageAcctName;"
+          "connectionString": "ResourceId=/subscriptions/$args[5]/resourceGroups/$args[0]/providers/Microsoft.Storage/storageAccounts/$args[3];"
         },
         "container": {
           "name": "$containerName",
@@ -45,12 +45,12 @@ $body = @"
       }
 }
 "@
-$url="https://$searchName.search.windows.net/datasources('{0}')?allowIndexDowntime=True&api-version=2024-07-01" -f $dataSourceName
+$url="https://$($args[1]).search.windows.net/datasources('$($args[2])')?allowIndexDowntime=True&api-version=2024-07-01"
 Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
     '''
     timeout: 'PT30M'
     cleanupPreference: 'OnSuccess'
-    arguments: '-rgName ${rgName} -searchName ${searchName} -dataSourceName ${dataSourceName} -storageAcctName ${storageAcctName} -containerName ${containerName} -subscriptionId ${subscription().subscriptionId}'
+    arguments: '${rgName} ${searchName} ${dataSourceName} ${storageAcctName} ${containerName} ${subscription().subscriptionId}'
     retentionInterval: 'P1D'
   }
 }

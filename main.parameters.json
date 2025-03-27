@@ -19,9 +19,6 @@
     },
     "searchPublicNetworkAccess": {
       "value": "enabled"
-    },
-    "searchDisableLocalAuth": {
-      "value": false
     }
   }
 }
