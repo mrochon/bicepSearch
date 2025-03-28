@@ -1,19 +1,26 @@
-$datasource = Get-Content -Path "json/datasource.json" -Raw
+$uniqueName='gxq7lyngidvio'
+$body = Get-Content -Path "json/index.json" -Raw
 $env:rgName = "rg-bicepsearch3"
 $env:searchName = "search_name"
-$env:dataSourceName = "dataSourceName"
+$env:bodyName = "bodyName"
 $env:storageAcctName = "storageAcctName"
 $env:containerName = "containerName"
 $env:indexName = "index-bicepsearch3"
-$env:subscriptionId = "12345678-1234-5678-123456789012"
+$env:subscriptionId = "7cee9002-39e6-44f8-a673-6f8680f8f4ad"
+$env:openaiEndpoint = "https://ai-${uniqueName}openai.com"
+$env:searchIdentityName = "search-${uniqueName}"
 
-$datasource = $datasource -replace 'SUBSCRIPTION_ID', $env:subscriptionId
-$datasource = $datasource -replace 'RESOURCEGROUP_NAME', $env:rgName
-$datasource = $datasource -replace 'STORAGEACCOUNT_NAME', $env:storageAcctName
-$datasource = $datasource -replace 'CONTAINER_NAME', $env:containerName
-
-$jsonBody = $datasource
-$url = "https://mrfunctions.azurewebsites.net/api/ReceiveCall?"
-# $url="https://$($env:searchName).search.windows.net/datasources('$($env:dataSourceName)')?allowIndexDowntime=True&api-version=2024-07-01"
-Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $jsonBody
+$body = $body -replace 'INDEX_NAME', $env:indexName
+$body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId
+$body = $body -replace 'RESOURCEGROUP_NAME', $env:rgName
+$body = $body -replace 'OPENAI_ENDPOINT', $env:openaiEndpoint
+$body = $body -replace 'SEARCH_IDENTITY_NAME', $env:searchIdentityName
+$debug = $false
+if ($debug) {
+    $url = "https://mrfunctions.azurewebsites.net/api/ReceiveCall?"
+} else {
+    $url="https://$($env:searchName).search.windows.net/bodys('$($env:bodyName)')?allowIndexDowntime=True&api-version=2024-07-01"
+}
+$url
+Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
 "Finished"

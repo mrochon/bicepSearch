@@ -5,6 +5,8 @@ param projectName string
 param uniqueName string
 param location string = resourceGroup().location
 param tags object = {}
+param openaiEndpoint string
+param searchIdentityName string
 
 param sku string = 'standard'
 
@@ -106,13 +108,25 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
     azPowerShellVersion: '7.5.0'
     environmentVariables: [
       {
+        name: 'projectName'
+        value: projectName
+      }  
+      {
+        name: 'subscriptionId'
+        value: subscription().subscriptionId
+      }      
+      {
         name: 'dataSource'
         value: loadTextContent('../json/datasource.json', 'utf-8')
       }
       {
+        name: 'synonymMap'
+        value: loadTextContent('../json/synonymmap.json', 'utf-8')
+      }      
+      {
         name: 'index'
         value: loadTextContent('../json/index.json', 'utf-8')
-      }      
+      }       
       {
         name: 'rgName'
         value: resourceGroup().name
@@ -138,35 +152,56 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
         value: 'index-${projectName}'
       }
       {
-        name: 'subscriptionId'
-        value: subscription().subscriptionId
+        name: 'openaiEndpoint'
+        value: openaiEndpoint
       }
+      {
+        name: 'searchIdentityName'
+        value: '${search_name}-identity'
+      }            
     ]    
     scriptContent: '''
+$debug = $false
 $token = Get-AzAccessToken -ResourceUrl "https://search.azure.com/"
 $headers = @{
   'Authorization' = "Bearer $($token.Token)"
   'Content-Type' = 'application/json'
 }
-$datasource = $env:dataSource
-$datasource = $datasource -replace 'DATASOURCE_NAME', $env:dataSourceName
-$datasource = $datasource -replace 'SUBSCRIPTION_ID', $env:subscriptionId
-$datasource = $datasource -replace 'RESOURCEGROUP_NAME', $env:rgName
-$datasource = $datasource -replace 'STORAGEACCOUNT_NAME', $env:storageAcctName
-$datasource = $datasource -replace 'CONTAINER_NAME', $env:containerName
-# $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$env:searchName&dataSourceName=$env:dataSourceName&storageAcctName=$env:storageAcctName&containerName=$env:containerName"
-$url="https://$($env:searchName).search.windows.net/datasources('$($env:dataSourceName)')?allowIndexDowntime=True&api-version=2024-07-01"
-Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $datasource
+$body = $env:dataSource
+$body = $body -replace 'DATASOURCE_NAME', $env:dataSourceName
+$body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId
+$body = $body -replace 'RESOURCEGROUP_NAME', $env:rgName
+$body = $body -replace 'STORAGEACCOUNT_NAME', $env:storageAcctName
+$body = $body -replace 'CONTAINER_NAME', $env:containerName
+if ($debug) {
+  $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
+} else {
+    $url="https://$($env:searchName).search.windows.net/datasources('$($env:dataSourceName)')?allowIndexDowntime=True&api-version=2024-07-01"
+}
+Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
 
-$index = $env:index
-$datasource = $datasource -replace 'DATASOURCE_NAME', $env:dataSourceName
-$datasource = $datasource -replace 'SUBSCRIPTION_ID', $env:subscriptionId
-$datasource = $datasource -replace 'RESOURCEGROUP_NAME', $env:rgName
-$datasource = $datasource -replace 'STORAGEACCOUNT_NAME', $env:storageAcctName
-$datasource = $datasource -replace 'CONTAINER_NAME', $env:containerName
-# $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$env:searchName&dataSourceName=$env:dataSourceName&storageAcctName=$env:storageAcctName&containerName=$env:containerName"
-$url="https://$($env:searchName).search.windows.net/datasources('$($env:dataSourceName)')?allowIndexDowntime=True&api-version=2024-07-01"
-Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $datasource
+$body = $env:synonymMap
+$body = $body -replace 'PROJECT_NAME', $env:projectName
+if ($debug) {
+  $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
+} else {
+    $url="https://$($env:searchName).search.windows.net/synonymmaps('$($env:projectName)-map')?allowIndexDowntime=True&api-version=2024-07-01"
+}
+Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
+
+$body = $env:index
+$body = $body -replace 'PROJECT_NAME', $env:projectName
+$body = $body -replace 'INDEX_NAME', $env:indexName
+$body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId
+$body = $body -replace 'RESOURCEGROUP_NAME', $env:rgName
+$body = $body -replace 'OPENAI_ENDPOINT', $env:openaiEndpoint
+$body = $body -replace 'SEARCH_IDENTITY_NAME', $env:searchIdentityName
+if ($debug) {
+  $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
+} else {
+    $url="https://$($env:searchName).search.windows.net/indexes('$($env:indexName)')?allowIndexDowntime=True&api-version=2024-07-01"
+}
+Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
     '''
     timeout: 'PT30M'
     cleanupPreference: 'OnSuccess'

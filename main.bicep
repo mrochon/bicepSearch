@@ -123,6 +123,8 @@ module searchService 'services/search.bicep' = {
     sku: searchSkuName
     storageAcctName: 'storage${uniqueName}'
     containerName: containers[0]
+    searchIdentityName: 'search-${uniqueName}'
+    openaiEndpoint: 'https://ai-${uniqueName}.openai.azure.com'
   }
 }
 

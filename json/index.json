@@ -76,7 +76,7 @@
       "key": false,
       "analyzer": "standard.lucene",
       "synonymMaps": [
-        "techdoc3-synonymmap"
+        "PROJECT_NAME-map"
       ]
     },
     {
