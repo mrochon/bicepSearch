@@ -1,0 +1,39 @@
+2025-03-28T21:09:12Z   [Information]   Executing 'Functions.ReceiveCall' (Reason='This function was programmatically called via the host APIs.', Id=d16eefdf-e506-4ad3-bef1-ab8f52df4c00)
+2025-03-28T21:09:12Z   [Information]   C# HTTP trigger function processed a request.
+2025-03-28T21:09:12Z   [Information]   Header: Host = mrfunctions.azurewebsites.net
+2025-03-28T21:09:12Z   [Information]   Header: User-Agent = Mozilla/5.0 (Linux; Linux 5.10.102.2-microsoft-standard #1 SMP Mon Mar 7 17:36:34 UTC 2022; en-US) PowerShell/7.2.24
+2025-03-28T21:09:12Z   [Information]   Header: Authorization = Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkpETmFfNGk0cjdGZ2lnTDNzSElsSTN4Vi1JVSIsImtpZCI6IkpETmFfNGk0cjdGZ2lnTDNzSElsSTN4Vi1JVSJ9.eyJhdWQiOiJodHRwczovL3NlYXJjaC5henVyZS5jb20vIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvMTE2NTQ5MGMtODliNS00NjNiLWIyMDMtOGI3N2UwMTU5N2QyLyIsImlhdCI6MTc0MzE5NDU1NSwibmJmIjoxNzQzMTk0NTU1LCJleHAiOjE3NDMyODEyNTUsImFpbyI6ImsyUmdZSmpBZU1icXBYR1dYZnlMcVpwYjNqN1RBQUE9IiwiYXBwaWQiOiI3NTJjNjBlOC1kMjRkLTRmZjYtOWE3Zi1iZTkxMjQwOWMxMTMiLCJhcHBpZGFjciI6IjIiLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xMTY1NDkwYy04OWI1LTQ2M2ItYjIwMy04Yjc3ZTAxNTk3ZDIvIiwiaWR0eXAiOiJhcHAiLCJvaWQiOiI0ZjcyZGNlZS0yMTBiLTQyOTMtYjMwOC0wZjhhY2EzZjZhNjYiLCJyaCI6IjEuQUwwQURFbGxFYldKTzBheUE0dDM0QldYMG9DakRZaGVtSmhCZ2JuZ1d4ekZNVmdEQVFDOUFBLiIsInN1YiI6IjRmNzJkY2VlLTIxMGItNDI5My1iMzA4LTBmOGFjYTNmNmE2NiIsInRpZCI6IjExNjU0OTBjLTg5YjUtNDYzYi1iMjAzLThiNzdlMDE1OTdkMiIsInV0aSI6ImNzQXVJbE50X1VpZldoWXpfUWJxQVEiLCJ2ZXIiOiIxLjAiLCJ4bXNfaWRyZWwiOiI3IDE2IiwieG1zX21pcmlkIjoiL3N1YnNjcmlwdGlvbnMvN2NlZTkwMDItMzllNi00NGY4LWE2NzMtNmY4NjgwZjhmNGFkL3Jlc291cmNlZ3JvdXBzL3JnLWJpY2Vwc2VhcmNoMy9wcm92aWRlcnMvTWljcm9zb2Z0Lk1hbmFnZWRJZGVudGl0eS91c2VyQXNzaWduZWRJZGVudGl0aWVzL3NjcmlwdC1neHE3bHluZ2lkdmlvLWlkZW50aXR5In0.bgjK-zzpRuMWzL87a2m0fzyQ8PLbv6e4Gnc5MDKs7qqBlmOZRimojq6Mqu4gwmvR6AHJiGR6a7nKSxJZjhKKsR4V3GzjheWTnjyh5I-yElNXdW3RJdiKfAxJ48DSX-2-gP3wojHUZQ6ksvoCA4q3vD0ebevHi2qyi86aUMYGXdreQujQs1y9P5zw1GQALXzJ4GT5rWktWmwE5TYQ60f0pFYkfCBsmFu15tJDkMRfTLt194Bi8sq0CynEoZXJscxrlHmET9KFbYU19eKvKchs6XBtwZxvnOiC_vN-C1sLx-gtDyADZ-u-kSgi6DoVAoUkV7l4Pl7y05f-RDODFN9GyA
+2025-03-28T21:09:12Z   [Information]   Header: Content-Type = application/json
+2025-03-28T21:09:12Z   [Information]   Header: Max-Forwards = 10
+2025-03-28T21:09:12Z   [Information]   Header: traceparent = 00-1c2357e3eb8637f30ad8152dd3e54e72-cb7f53ca86feb427-00
+2025-03-28T21:09:12Z   [Information]   Header: Content-Length = 370
+2025-03-28T21:09:12Z   [Information]   Header: X-ARR-LOG-ID = 4ef3c298-2c6c-4cdd-85e6-cf3213cad357
+2025-03-28T21:09:12Z   [Information]   Header: CLIENT-IP = 4.236.227.48:6592
+2025-03-28T21:09:12Z   [Information]   Header: DISGUISED-HOST = mrfunctions.azurewebsites.net
+2025-03-28T21:09:12Z   [Information]   Header: X-SITE-DEPLOYMENT-ID = mrfunctions
+2025-03-28T21:09:12Z   [Information]   Header: WAS-DEFAULT-HOSTNAME = mrfunctions.azurewebsites.net
+2025-03-28T21:09:12Z   [Information]   Header: X-AppService-Proto = https
+2025-03-28T21:09:12Z   [Information]   Header: X-ARR-SSL = 2048|256|CN=Microsoft Azure RSA TLS Issuing CA 04, O=Microsoft Corporation, C=US|CN=*.azurewebsites.net, O=Microsoft Corporation, L=Redmond, S=WA, C=US
+2025-03-28T21:09:12Z   [Information]   Header: X-Forwarded-TlsVersion = 1.3
+2025-03-28T21:09:12Z   [Information]   Header: X-Original-URL = /api/ReceiveCall?searchName=search-gxq7lyngidvio&dataSourceName=datasource&storageAcctName=storagegxq7lyngidvio&containerName=searchdata
+2025-03-28T21:09:12Z   [Information]   Header: X-WAWS-Unencoded-URL = /api/ReceiveCall?searchName=search-gxq7lyngidvio&dataSourceName=datasource&storageAcctName=storagegxq7lyngidvio&containerName=searchdata
+2025-03-28T21:09:12Z   [Information]   Header: x-ms-invocation-id = d16eefdf-e506-4ad3-bef1-ab8f52df4c00
+2025-03-28T21:09:12Z   [Information]   Header: X-Original-Proto = http
+2025-03-28T21:09:12Z   [Information]   Header: X-Original-Host = localhost:44965
+2025-03-28T21:09:12Z   [Information]   Header: X-Original-For = [::1]:54138
+2025-03-28T21:09:12Z   [Information]   Query Parameter: searchName = search-gxq7lyngidvio
+2025-03-28T21:09:12Z   [Information]   Query Parameter: dataSourceName = datasource
+2025-03-28T21:09:12Z   [Information]   Query Parameter: storageAcctName = storagegxq7lyngidvio
+2025-03-28T21:09:12Z   [Information]   Query Parameter: containerName = searchdata
+2025-03-28T21:09:12Z   [Information]   Request Body: {
+  "name": "datasource",
+  "description": "Tech documents.",
+  "type": "azureblob",
+  "credentials": {
+    "connectionString": "ResourceId=/subscriptions/7cee9002-39e6-44f8-a673-6f8680f8f4ad/resourceGroups/rg-bicepsearch3/providers/Microsoft.Storage/storageAccounts/storagegxq7lyngidvio;"
+  },
+  "container": {
+    "name": "searchdata",
+    "query": ""
+  }
+}

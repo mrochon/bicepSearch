@@ -1,0 +1,5 @@
+{
+  "name": "techdoc3-synonymmap",
+  "format": "solr",
+  "synonyms": "svc=>service\nvdi,inventory,stock"
+}

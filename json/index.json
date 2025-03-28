@@ -1,0 +1,188 @@
+{
+  "name": "INDEX_NAME",
+  "defaultScoringProfile": "",
+  "fields": [
+    {
+      "name": "id",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "stored": true,
+      "sortable": false,
+      "facetable": false,
+      "key": true,
+      "analyzer": "keyword",
+      "synonymMaps": []
+    },
+    {
+      "name": "parent_id",
+      "type": "Edm.String",
+      "filterable": true
+    },
+    {
+      "name": "blob_uri",
+      "type": "Edm.String",
+      "filterable": true
+    },
+    {
+      "name": "location",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "stored": true,
+      "sortable": false,
+      "facetable": false,
+      "key": false,
+      "analyzer": "standard.lucene",
+      "synonymMaps": []
+    },
+    {
+      "name": "path",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "stored": true,
+      "sortable": false,
+      "facetable": false,
+      "key": false,
+      "analyzer": "standard.lucene",
+      "synonymMaps": []
+    },
+    {
+      "name": "title",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "stored": true,
+      "sortable": false,
+      "facetable": false,
+      "key": false,
+      "analyzer": "standard.lucene",
+      "synonymMaps": []
+    },
+    {
+      "name": "text",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "stored": true,
+      "sortable": false,
+      "facetable": false,
+      "key": false,
+      "analyzer": "standard.lucene",
+      "synonymMaps": [
+        "techdoc3-synonymmap"
+      ]
+    },
+    {
+      "name": "textVector",
+      "type": "Collection(Edm.Single)",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false,
+      "key": false,
+      "indexAnalyzer": null,
+      "searchAnalyzer": null,
+      "analyzer": null,
+      "dimensions": 1536,
+      "vectorSearchProfile": "vectorProfile",
+      "synonymMaps": []
+    },
+    {
+      "name": "keywords",
+      "type": "Collection(Edm.String)",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false,
+      "key": false,
+      "indexAnalyzer": null,
+      "searchAnalyzer": null,
+      "analyzer": null,
+      "synonymMaps": []
+    }
+  ],
+  "corsOptions": null,
+  "suggesters": [],
+  "analyzers": [],
+  "tokenizers": [],
+  "tokenFilters": [],
+  "charFilters": [],
+  "encryptionKey": null,
+  "similarity": {
+    "@odata.type": "#Microsoft.Azure.Search.BM25Similarity",
+    "k1": null,
+    "b": null
+  },
+  "semantic": {
+    "defaultConfiguration": "semantic-configuration",
+    "configurations": [
+      {
+        "name": "semantic-configuration",
+        "prioritizedFields": {
+          "titleField": {
+            "fieldName": "title"
+          },
+          "prioritizedContentFields": [
+            {
+              "fieldName": "text"
+            }
+          ],
+          "prioritizedKeywordsFields": [
+            {
+              "fieldName": "keywords"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "vectorSearch": {
+    "algorithms": [
+      {
+        "name": "algorithm",
+        "kind": "hnsw",
+        "hnswParameters": {
+          "metric": "cosine",
+          "m": 4,
+          "efConstruction": 400,
+          "efSearch": 500
+        },
+        "exhaustiveKnnParameters": null
+      }
+    ],
+    "profiles": [
+      {
+        "name": "vectorProfile",
+        "algorithm": "algorithm",
+        "vectorizer": "vectorizer",
+        "compression": null
+      }
+    ],
+    "vectorizers": [
+      {
+        "name": "vectorizer",
+        "kind": "azureOpenAI",
+        "azureOpenAIParameters": {
+          "resourceUri": "OPENAI_ENDPOINT",
+          "deploymentId": "text-embedding-3-small",
+          "modelName": "text-embedding-3-small",
+          "authIdentity": {
+            "@odata.type": "#Microsoft.Azure.Search.DataUserAssignedIdentity",
+            "userAssignedIdentity": "/subscriptions/SUBSCRIPTION_ID/resourcegroups/RESOURCEGROUP_NAME/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SEARCH_IDENTITY_NAME"
+          }
+        },
+        "customWebApiParameters": null
+      }
+    ],
+    "compressions": []
+  }
+}

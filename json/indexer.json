@@ -1,0 +1,26 @@
+{
+  "@odata.context": "https://mrsearch2.search.windows.net/$metadata#indexers/$entity",
+  "@odata.etag": "\"0x8DC59DAF7632D5F\"",
+  "name": "techdoc3-indexer",
+  "description": "",
+  "dataSourceName": "techdoc3-datasource",
+  "skillsetName": "techdoc3-skillset",
+  "targetIndexName": "techdoc3-index",
+  "disabled": null,
+  "schedule": {
+    "interval": "PT1H",
+    "startTime": "2025-03-16T14:34:08.364Z"
+  },
+  "parameters": {
+    "configuration": {
+      "parsingMode": "json"
+    }
+  },
+  "outputFieldMappings": [
+    {
+      "sourceFieldName": "/document/chunks/*",
+      "targetFieldName": "textVector"
+    }
+  ],
+  "encryptionKey": null
+}

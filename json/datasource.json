@@ -1,0 +1,12 @@
+{
+  "name": "DATASOURCE_NAME",
+  "description": "Tech documents.",
+  "type": "azureblob",
+  "credentials": {
+    "connectionString": "ResourceId=/subscriptions/SUBSCRIPTION_ID/resourceGroups/RESOURCEGROUP_NAME/providers/Microsoft.Storage/storageAccounts/STORAGEACCOUNT_NAME;"
+  },
+  "container": {
+    "name": "CONTAINER_NAME",
+    "query": ""
+  }
+}

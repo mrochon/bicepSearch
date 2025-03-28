@@ -1,0 +1,38 @@
+2025-03-28T20:56:04Z   [Information]   Executing 'Functions.ReceiveCall' (Reason='This function was programmatically called via the host APIs.', Id=aee6a856-4b65-4739-9ffa-412ee03d8f75)
+2025-03-28T20:56:04Z   [Information]   C# HTTP trigger function processed a request.
+2025-03-28T20:56:04Z   [Information]   Header: Host = mrfunctions.azurewebsites.net
+2025-03-28T20:56:04Z   [Information]   Header: User-Agent = Mozilla/5.0 (Windows NT 10.0; Microsoft Windows 10.0.26100; en-US) PowerShell/7.5.0
+2025-03-28T20:56:04Z   [Information]   Header: Accept-Encoding = gzip, deflate, br
+2025-03-28T20:56:04Z   [Information]   Header: Authorization = Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IkpETmFfNGk0cjdGZ2lnTDNzSElsSTN4Vi1JVSIsImtpZCI6IkpETmFfNGk0cjdGZ2lnTDNzSElsSTN4Vi1JVSJ9.eyJhdWQiOiJodHRwczovL3NlYXJjaC5henVyZS5jb20vIiwiaXNzIjoiaHR0cHM6Ly9zdHMud2luZG93cy5uZXQvMTE2NTQ5MGMtODliNS00NjNiLWIyMDMtOGI3N2UwMTU5N2QyLyIsImlhdCI6MTc0MzE5NTA1NSwibmJmIjoxNzQzMTk1MDU1LCJleHAiOjE3NDMxOTg5NTUsImFpbyI6ImsyUmdZRWc2a3h4OHJlVFo3OFltL2hwcEova3NBQT09IiwiYXBwaWQiOiJlM2YyNDE4YS04Y2E1LTRkNDgtODY0Yy0xYTY4MTljZmU2NTAiLCJhcHBpZGFjciI6IjEiLCJpZHAiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC8xMTY1NDkwYy04OWI1LTQ2M2ItYjIwMy04Yjc3ZTAxNTk3ZDIvIiwiaWR0eXAiOiJhcHAiLCJvaWQiOiIwMjk4ZTgyOS0wODU0LTQxMTctODc2ZC00MTVkNGU5ZDkwN2YiLCJyaCI6IjEuQWIwQURFbGxFYldKTzBheUE0dDM0QldYMG9DakRZaGVtSmhCZ2JuZ1d4ekZNVmdEQVFDOUFBLiIsInN1YiI6IjAyOThlODI5LTA4NTQtNDExNy04NzZkLTQxNWQ0ZTlkOTA3ZiIsInRpZCI6IjExNjU0OTBjLTg5YjUtNDYzYi1iMjAzLThiNzdlMDE1OTdkMiIsInV0aSI6Il9qT1FqakxPS2syQzJvQlRoZ0VCQUEiLCJ2ZXIiOiIxLjAiLCJ4bXNfaWRyZWwiOiI3IDEyIn0.J48JHeuRHoWBPPkO3tGw7w2G8M4Fpk3C_Ox0_EdLusnkIrAC0BwNM4rtTysIqjXcc8WCIWa94VA3bmWIfma-fjy9ula4RkiqAWCemKiON9XzXgDulFBwWDG8UQdpGQWlDmI8OgkirtBUakvWM3YRB0QNi4Ezr7-0oFGKSX5N1bsaa-xrh27gvELZWgEvFRkbXo2C7eESQD-s_C6oL7-y6rg1aoRs3PuwgqKZl0L9fj7gVaXpy11Rwj1t0WZAdLuY06O1x-Q6oKYYpj1SQF8zb9GkKj8mxNXB3Rek1mM82sdWaWZXyljD7RLCZor90bwkga9Ta8mX0oA5q-HgOVcF9w
+2025-03-28T20:56:04Z   [Information]   Header: Content-Type = application/json
+2025-03-28T20:56:04Z   [Information]   Header: Max-Forwards = 10
+2025-03-28T20:56:04Z   [Information]   Header: traceparent = 00-ffd23fbe6f72b05959520d99f24bf545-9c652be3cb2389d9-00
+2025-03-28T20:56:04Z   [Information]   Header: Content-Length = 379
+2025-03-28T20:56:04Z   [Information]   Header: X-ARR-LOG-ID = b23dcf4d-214d-4a23-ad16-0f57c46708f2
+2025-03-28T20:56:04Z   [Information]   Header: CLIENT-IP = 67.168.56.202:63567
+2025-03-28T20:56:04Z   [Information]   Header: DISGUISED-HOST = mrfunctions.azurewebsites.net
+2025-03-28T20:56:04Z   [Information]   Header: X-SITE-DEPLOYMENT-ID = mrfunctions
+2025-03-28T20:56:04Z   [Information]   Header: WAS-DEFAULT-HOSTNAME = mrfunctions.azurewebsites.net
+2025-03-28T20:56:04Z   [Information]   Header: X-AppService-Proto = https
+2025-03-28T20:56:04Z   [Information]   Header: X-ARR-SSL = 2048|256|CN=Microsoft Azure RSA TLS Issuing CA 04, O=Microsoft Corporation, C=US|CN=*.azurewebsites.net, O=Microsoft Corporation, L=Redmond, S=WA, C=US
+2025-03-28T20:56:04Z   [Information]   Header: X-Forwarded-TlsVersion = 1.3
+2025-03-28T20:56:04Z   [Information]   Header: X-Original-URL = /api/ReceiveCall?
+2025-03-28T20:56:04Z   [Information]   Header: X-WAWS-Unencoded-URL = /api/ReceiveCall?
+2025-03-28T20:56:04Z   [Information]   Header: x-ms-invocation-id = aee6a856-4b65-4739-9ffa-412ee03d8f75
+2025-03-28T20:56:04Z   [Information]   Header: X-Original-Proto = http
+2025-03-28T20:56:04Z   [Information]   Header: X-Original-Host = localhost:44965
+2025-03-28T20:56:04Z   [Information]   Header: X-Original-For = [::1]:60312
+2025-03-28T20:56:04Z   [Information]   Request Body: {
+  "name": "techdoc3-datasource",
+  "description": "Tech documents.",
+  "type": "azureblob",
+  "credentials": {
+    "connectionString": "ResourceId=/subscriptions/7cee9002-39e6-44f8-a673-6f8680f8f4ad/resourceGroups/rg-bicepsearch3/providers/Microsoft.Storage/storageAccounts/storagegxq7lyngidvio;"
+  },
+  "container": {
+    "name": "searchdata",
+    "query": ""
+  }
+}
+2025-03-28T20:56:04Z   [Information]   Executing OkObjectResult, writing value of type 'System.String'.
+2025-03-28T20:56:04Z   [Information]   Executed 'Functions.ReceiveCall' (Succeeded, Id=aee6a856-4b65-4739-9ffa-412ee03d8f75, Duration=10ms)

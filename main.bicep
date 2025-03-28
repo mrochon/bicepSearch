@@ -104,6 +104,7 @@ module searchService 'services/search.bicep' = {
   scope: rg
   name:  'search'
   params: {
+    projectName: projectName
     tags: tags
     location: location
     uniqueName: uniqueName
@@ -120,7 +121,6 @@ module searchService 'services/search.bicep' = {
     publicNetworkAccess: searchPublicNetworkAccess
     replicaCount: searchReplicaCount
     sku: searchSkuName
-    dataSourceName: 'sourcedata'
     storageAcctName: 'storage${uniqueName}'
     containerName: containers[0]
   }
