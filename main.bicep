@@ -120,7 +120,7 @@ module searchService 'services/search.bicep' = {
     publicNetworkAccess: searchPublicNetworkAccess
     replicaCount: searchReplicaCount
     sku: searchSkuName
-    dataSourceName: 'sourceData'
+    dataSourceName: 'sourcedata'
     storageAcctName: 'storage${uniqueName}'
     containerName: containers[0]
   }

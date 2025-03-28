@@ -122,7 +122,7 @@ $body = @{
   }
 }
 $jsonBody = $body | ConvertTo-Json -Depth 10
-$url="https://$($env:searchName).search.windows.net/datasources('$($env:dataSourceName)')?allowIndexDowntime=True&api-version=2024-07-01"
+$url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)&dataSourceName=$($env:dataSourceName)&storageAcctName=$($env:storageAcctName)&containerName=$($env:containerName)"
 $resp = Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $jsonBody
     '''
     timeout: 'PT30M'

@@ -31,7 +31,7 @@ param deployments array = [
       name: 'text-embedding-3-small'
       version: '1'
     }
-    capacity: 150
+    capacity: 50
   }
 ]
 

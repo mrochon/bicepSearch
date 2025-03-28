@@ -23,7 +23,7 @@ $body = @{
 }
 $jsonBody = $body | ConvertTo-Json -Depth 10
 $url="https://$($args[1]).search.windows.net/datasources('$($args[2])')?allowIndexDowntime=True&api-version=2024-07-01"
-#Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $jsonBody
+Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $jsonBody
 echo "Completed with no error"
 
 
