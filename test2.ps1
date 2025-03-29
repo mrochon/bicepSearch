@@ -9,6 +9,9 @@ $env:indexName = "index-bicepsearch3"
 $env:subscriptionId = "7cee9002-39e6-44f8-a673-6f8680f8f4ad"
 $env:openaiEndpoint = "https://ai-${uniqueName}openai.com"
 $env:searchIdentityName = "search-${uniqueName}"
+foreach ($val in Get-ChildItem Env:) {
+    Write-Host "$($val.Key) = $($val.Value)"
+}
 
 $body = $body -replace 'INDEX_NAME', $env:indexName
 $body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId

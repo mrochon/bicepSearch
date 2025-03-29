@@ -1,11 +1,9 @@
 {
-  "@odata.context": "https://mrsearch2.search.windows.net/$metadata#indexers/$entity",
-  "@odata.etag": "\"0x8DC59DAF7632D5F\"",
-  "name": "techdoc3-indexer",
+  "name": "PROJECT_NAME-indexer",
   "description": "",
-  "dataSourceName": "techdoc3-datasource",
-  "skillsetName": "techdoc3-skillset",
-  "targetIndexName": "techdoc3-index",
+  "dataSourceName": "PROJECT_NAME-datasource",
+  "skillsetName": "PROJECT_NAME-skillset",
+  "targetIndexName": "PROJECT_NAME-index",
   "disabled": null,
   "schedule": {
     "interval": "PT1H",

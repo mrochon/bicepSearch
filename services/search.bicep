@@ -38,7 +38,6 @@ param replicaCount int = 1
 ])
 param semanticSearch string = 'free'
 
-param dataSourceName string = 'datasource'
 param storageAcctName string
 param containerName string
 
@@ -126,7 +125,15 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
       {
         name: 'index'
         value: loadTextContent('../json/index.json', 'utf-8')
-      }       
+      }  
+      {
+        name: 'skillset'
+        value: loadTextContent('../json/skillset.json', 'utf-8')
+      }    
+      {
+        name: 'indexer'
+        value: loadTextContent('../json/indexer.json', 'utf-8')
+      }                    
       {
         name: 'rgName'
         value: resourceGroup().name
@@ -134,10 +141,6 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
       {
         name: 'searchName'
         value: search_name
-      }
-      {
-        name: 'dataSourceName'
-        value: dataSourceName
       }
       {
         name: 'storageAcctName'
@@ -148,27 +151,24 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
         value: containerName
       }
       {
-        name: 'indexName'
-        value: 'index-${projectName}'
-      }
-      {
         name: 'openaiEndpoint'
         value: openaiEndpoint
       }
       {
         name: 'searchIdentityName'
         value: '${search_name}-identity'
-      }            
+      } 
     ]    
     scriptContent: '''
-$debug = $false
+$debug = $true
 $token = Get-AzAccessToken -ResourceUrl "https://search.azure.com/"
 $headers = @{
   'Authorization' = "Bearer $($token.Token)"
   'Content-Type' = 'application/json'
 }
+
 $body = $env:dataSource
-$body = $body -replace 'DATASOURCE_NAME', $env:dataSourceName
+$body = $body -replace 'PROJECT_NAME', $env:projectName
 $body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId
 $body = $body -replace 'RESOURCEGROUP_NAME', $env:rgName
 $body = $body -replace 'STORAGEACCOUNT_NAME', $env:storageAcctName
@@ -176,7 +176,7 @@ $body = $body -replace 'CONTAINER_NAME', $env:containerName
 if ($debug) {
   $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
 } else {
-    $url="https://$($env:searchName).search.windows.net/datasources('$($env:dataSourceName)')?allowIndexDowntime=True&api-version=2024-07-01"
+    $url="https://$($env:searchName).search.windows.net/datasources('$($env:projectName)-datasource')?allowIndexDowntime=True&api-version=2024-07-01"
 }
 Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
 
@@ -191,7 +191,6 @@ Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
 
 $body = $env:index
 $body = $body -replace 'PROJECT_NAME', $env:projectName
-$body = $body -replace 'INDEX_NAME', $env:indexName
 $body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId
 $body = $body -replace 'RESOURCEGROUP_NAME', $env:rgName
 $body = $body -replace 'OPENAI_ENDPOINT', $env:openaiEndpoint
@@ -199,7 +198,33 @@ $body = $body -replace 'SEARCH_IDENTITY_NAME', $env:searchIdentityName
 if ($debug) {
   $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
 } else {
-    $url="https://$($env:searchName).search.windows.net/indexes('$($env:indexName)')?allowIndexDowntime=True&api-version=2024-07-01"
+    $url="https://$($env:searchName).search.windows.net/indexes('$($env:PROJECT_NAME)-index')?allowIndexDowntime=True&api-version=2024-07-01"
+}
+Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
+
+$body = $env:skillset
+$body = $body -replace 'PROJECT_NAME', $env:projectName
+$body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId
+$body = $body -replace 'RESOURCEGROUP_NAME', $env:rgName
+$body = $body -replace 'OPENAI_ENDPOINT', $env:openaiEndpoint
+$body = $body -replace 'SEARCH_IDENTITY_NAME', $env:searchIdentityName
+if ($debug) {
+  $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
+} else {
+    $url="https://$($env:searchName).search.windows.net/skillsets('$($env:projectName)-skillset')?allowIndexDowntime=True&api-version=2024-07-01"
+}
+Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
+
+$body = $env:indexer
+$body = $body -replace 'PROJECT_NAME', $env:projectName
+$body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId
+$body = $body -replace 'RESOURCEGROUP_NAME', $env:rgName
+$body = $body -replace 'OPENAI_ENDPOINT', $env:openaiEndpoint
+$body = $body -replace 'SEARCH_IDENTITY_NAME', $env:searchIdentityName
+if ($debug) {
+  $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
+} else {
+    $url="https://$($env:searchName).search.windows.net/indexers('$($env:projectName)-indexer')?allowIndexDowntime=True&api-version=2024-07-01"
 }
 Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
     '''

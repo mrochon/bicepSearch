@@ -1,7 +1,5 @@
 {
-  "@odata.context": "https://mrsearch2.search.windows.net/$metadata#skillsets/$entity",
-  "@odata.etag": "\"0x8DC59DAEE959E97\"",
-  "name": "techdoc3-skillset",
+  "name": "PROJECT_NAME-skillset",
   "description": "",
   "skills": [
     {
@@ -31,7 +29,7 @@
       "@odata.type": "#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill",
       "name": "#3",
       "description": null,
-      "resourceUri": "https://mrai.openai.azure.com/",
+      "resourceUri": "OPENAI_ENDPOINT",
       "deploymentId": "text-embedding-3-small",
       "modelName": "text-embedding-3-small",
       "context": "/document/chunks/*",
@@ -49,14 +47,14 @@
       ],
       "authIdentity": {
         "@odata.type": "#Microsoft.Azure.Search.DataUserAssignedIdentity",
-        "userAssignedIdentity": "/subscriptions/7cee9002-39e6-44f8-a673-6f8680f8f4ad/resourcegroups/AI/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mraisearch2-identity"
+        "userAssignedIdentity": "/subscriptions/SUBSCRIPTION_ID/resourcegroups/RESOURCEGROUP_NAME/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SEARCH_IDENTITY_NAME"
       }
     }
   ],
   "indexProjections": {
     "selectors": [
       {
-        "targetIndexName": "techdoc3-index",
+        "targetIndexName": "PROJECT_NAME-index",
         "parentKeyFieldName": "parent_id",
         "sourceContext": "/document/chunks/*",
         "mappings": [
@@ -65,20 +63,12 @@
             "source": "/document/metadata_storage_path"
           },
           {
-            "name": "path",
-            "source": "/document/path"
-          },
-          {
             "name": "title",
             "source": "/document/title"
           },
           {
             "name": "keywords",
             "source": "/document/keywords"
-          },
-          {
-            "name": "location",
-            "source": "/document/location"
           },
           {
             "name": "text",

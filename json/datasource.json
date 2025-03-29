@@ -1,5 +1,5 @@
 {
-  "name": "DATASOURCE_NAME",
+  "name": "PROJECT_NAME-datasource",
   "description": "Tech documents.",
   "type": "azureblob",
   "credentials": {
