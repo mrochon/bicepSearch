@@ -63,6 +63,16 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   tags: tags
 }
 
+module managedIdentities 'services/managedIdentities.bicep' = {
+  scope: rg
+  name: 'managedIdentities'
+  params: {
+    tags: tags
+    location: location
+    uniqueName: uniqueName
+  }
+}
+
 module storage 'services/storage.bicep' = {
   scope: rg
   name: 'storage'
@@ -83,7 +93,7 @@ module storage 'services/storage.bicep' = {
     kind: 'StorageV2'
     minimumTlsVersion: 'TLS1_2'
     supportsHttpsTrafficOnly: true
-    searchManagedIdentityPrincipalId: searchService.outputs.identityPrincipalId
+    searchManagedIdentityPrincipalId: managedIdentities.outputs.searchIdentityPrincipalId
   }
 }
 
@@ -95,7 +105,7 @@ module ai 'services/ai.bicep' = {
     tags: tags
     location: location
     name: 'ai-${uniqueName}'
-    searchManagedIdentityPrincipalId: searchService.outputs.identityPrincipalId
+    searchManagedIdentityPrincipalId: managedIdentities.outputs.searchIdentityPrincipalId
   }
 }
 
@@ -123,7 +133,7 @@ module searchService 'services/search.bicep' = {
     sku: searchSkuName
     storageAcctName: 'storage${uniqueName}'
     containerName: containers[0]
-    searchIdentityName: 'search-${uniqueName}'
+    searchIdentityId: managedIdentities.outputs.searchIdentityId
     openaiEndpoint: 'https://ai-${uniqueName}.openai.azure.com'
   }
 }

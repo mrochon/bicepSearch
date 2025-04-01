@@ -6,7 +6,7 @@ param uniqueName string
 param location string = resourceGroup().location
 param tags object = {}
 param openaiEndpoint string
-param searchIdentityName string
+param searchIdentityId string
 
 param sku string = 'standard'
 
@@ -43,12 +43,6 @@ param containerName string
 
 var search_name = 'search-${uniqueName}'
 
-resource searchIdentityProvider 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' = {
-  name: '${search_name}-identity'
-  location: location
-  tags: tags
-}
-
 resource search 'Microsoft.Search/searchServices@2024-06-01-preview' = {
   name: search_name
   location: location
@@ -56,7 +50,7 @@ resource search 'Microsoft.Search/searchServices@2024-06-01-preview' = {
   identity: {
     type: 'SystemAssigned, UserAssigned'
     userAssignedIdentities: {
-      '${searchIdentityProvider.id}': {}
+      '${searchIdentityId}': {}
     }
   }
   properties: {
@@ -237,5 +231,3 @@ Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
 output id string = search.id
 output endpoint string = 'https://${search_name}.search.windows.net/'
 output name string = search_name
-output identityId string = searchIdentityProvider.id
-output identityPrincipalId string = searchIdentityProvider.properties.principalId

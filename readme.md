@@ -31,6 +31,10 @@ To debug possible errors in the script components of the bicep calling http REST
 Replace the call to the REST service with a call to this function, with same parameters and body.
 You can then replicate the call to the original service to see what errors it returns.
 
+```
+curl -X POST -H "Content-Type: application/json" -d '{"key1":"value1", "key2":"value2"}' https://mrfunctions.azurewebsites.net/api/ReceiveCall?
+```
+
 ```C#
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
