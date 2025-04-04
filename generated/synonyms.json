@@ -1,0 +1,5 @@
+{
+  "name": "bicepsearch1-map",
+  "format": "solr",
+  "synonyms": "svc=>service\nvdi,inventory,stock"
+}

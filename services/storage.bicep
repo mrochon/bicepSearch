@@ -1,6 +1,6 @@
 targetScope = 'resourceGroup'
 metadata description = 'Creates an Azure storage account.'
-param name string
+param uniqueName string
 param location string = resourceGroup().location
 param tags object = {}
 @description('The list of blob containers to create in the storage account.')
@@ -32,12 +32,10 @@ param networkAcls object = {
 param publicNetworkAccess string = 'Enabled'
 param sku object = { name: 'Standard_LRS' }
 
-param searchManagedIdentityPrincipalId string
-
-var storage_name = 'storage${name}'
+param searchSAIdentityPrincipalId string
 
 resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
-  name: storage_name
+  name: 'storage${uniqueName}'
   location: location
   tags: tags
   kind: kind
@@ -102,12 +100,12 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
 }
 
 resource search2StorageRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('searchcontainer', searchManagedIdentityPrincipalId, '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')
+  name: guid('searchcontainer', searchSAIdentityPrincipalId, '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')
   scope: storage::blobServices::container[0]
   properties: {
     //delegatedManagedIdentityResourceId: searchManagedIdentityId
     description: 'Blob Reader role assignment for Search service'
-    principalId: searchManagedIdentityPrincipalId
+    principalId: searchSAIdentityPrincipalId
     principalType: 'ServicePrincipal'
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')
   }

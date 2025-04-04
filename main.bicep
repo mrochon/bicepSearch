@@ -79,7 +79,7 @@ module storage 'services/storage.bicep' = {
   params: {
     tags: tags
     location: location
-    name: uniqueName
+    uniqueName: uniqueName
     containers: containers
     accessTier: 'Hot'
     allowBlobPublicAccess: false
@@ -93,7 +93,7 @@ module storage 'services/storage.bicep' = {
     kind: 'StorageV2'
     minimumTlsVersion: 'TLS1_2'
     supportsHttpsTrafficOnly: true
-    searchManagedIdentityPrincipalId: managedIdentities.outputs.searchIdentityPrincipalId
+    searchSAIdentityPrincipalId: searchService.outputs.searchSAIdentityPrincipalId
   }
 }
 
@@ -105,7 +105,7 @@ module ai 'services/ai.bicep' = {
     tags: tags
     location: location
     name: 'ai-${uniqueName}'
-    searchManagedIdentityPrincipalId: managedIdentities.outputs.searchIdentityPrincipalId
+    searchUAIdentityPrincipalId: managedIdentities.outputs.searchUAIdentityPrincipalId
   }
 }
 
@@ -114,7 +114,6 @@ module searchService 'services/search.bicep' = {
   scope: rg
   name:  'search'
   params: {
-    projectName: projectName
     tags: tags
     location: location
     uniqueName: uniqueName
@@ -131,10 +130,21 @@ module searchService 'services/search.bicep' = {
     publicNetworkAccess: searchPublicNetworkAccess
     replicaCount: searchReplicaCount
     sku: searchSkuName
-    storageAcctName: 'storage${uniqueName}'
-    containerName: containers[0]
-    searchIdentityId: managedIdentities.outputs.searchIdentityId
-    openaiEndpoint: 'https://ai-${uniqueName}.openai.azure.com'
+    searchUAIdentityId: managedIdentities.outputs.searchUAIdentityId
+  }
+}
+
+module deploymentScripts 'services/deploymentScripts.bicep' = {
+  scope: rg
+  name: 'scripts'
+  params: {
+    projectName: projectName
+    openaiEndpoint: ai.outputs.endpoint
+    searchScriptIdentityId: searchService.outputs.searchScriptIdentityId  
+    searchName: searchService.outputs.name
+    storageAcctName: storage.outputs.name
+    containerName: containers[0]  
+    searchUAIdentityName: managedIdentities.outputs.searchUAIdentityName
   }
 }
 
@@ -167,3 +177,4 @@ module analytics 'services/dashboard.bicep' = {
 // }
 
 output aiEndpoint string = ai.outputs.endpoint
+output searchEndpoint string = searchService.outputs.endpoint

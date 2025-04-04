@@ -12,5 +12,10 @@ resource searchIdentityProvider 'Microsoft.ManagedIdentity/userAssignedIdentitie
   tags: tags
 }
 
-output searchIdentityId string = searchIdentityProvider.id
-output searchIdentityPrincipalId string = searchIdentityProvider.properties.principalId
+output searchUAIdentityName string = searchIdentityProvider.name
+
+@description('The ID of the user assigned identity.')
+output searchUAIdentityId string = searchIdentityProvider.id
+
+@description('The principal ID of the user assigned identity.')
+output searchUAIdentityPrincipalId string = searchIdentityProvider.properties.principalId

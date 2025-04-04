@@ -1,12 +1,9 @@
-targetScope = 'resourceGroup'
+
 
 metadata description = 'Creates an Azure AI Search instance.'
-param projectName string
 param uniqueName string
 param location string = resourceGroup().location
 param tags object = {}
-param openaiEndpoint string
-param searchIdentityId string
 
 param sku string = 'standard'
 
@@ -37,9 +34,7 @@ param replicaCount int = 1
   'standard'
 ])
 param semanticSearch string = 'free'
-
-param storageAcctName string
-param containerName string
+param searchUAIdentityId string
 
 var search_name = 'search-${uniqueName}'
 
@@ -50,7 +45,7 @@ resource search 'Microsoft.Search/searchServices@2024-06-01-preview' = {
   identity: {
     type: 'SystemAssigned, UserAssigned'
     userAssignedIdentities: {
-      '${searchIdentityId}': {}
+      '${searchUAIdentityId}': {}
     }
   }
   properties: {
@@ -86,148 +81,9 @@ resource scriptRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-0
   }
 }
 
-resource deploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
-  name: 'searchSetup'
-  dependsOn: [scriptRoleAssignment]
-  location: location
-  kind: 'AzurePowerShell'
-  identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${scriptIdentity.id}': {}
-    }
-  }
-  properties: {
-    azPowerShellVersion: '7.5.0'
-    environmentVariables: [
-      {
-        name: 'projectName'
-        value: projectName
-      }  
-      {
-        name: 'subscriptionId'
-        value: subscription().subscriptionId
-      }      
-      {
-        name: 'dataSource'
-        value: loadTextContent('../json/datasource.json', 'utf-8')
-      }
-      {
-        name: 'synonymMap'
-        value: loadTextContent('../json/synonymmap.json', 'utf-8')
-      }      
-      {
-        name: 'index'
-        value: loadTextContent('../json/index.json', 'utf-8')
-      }  
-      {
-        name: 'skillset'
-        value: loadTextContent('../json/skillset.json', 'utf-8')
-      }    
-      {
-        name: 'indexer'
-        value: loadTextContent('../json/indexer.json', 'utf-8')
-      }                    
-      {
-        name: 'rgName'
-        value: resourceGroup().name
-      }
-      {
-        name: 'searchName'
-        value: search_name
-      }
-      {
-        name: 'storageAcctName'
-        value: storageAcctName
-      }
-      {
-        name: 'containerName'
-        value: containerName
-      }
-      {
-        name: 'openaiEndpoint'
-        value: openaiEndpoint
-      }
-      {
-        name: 'searchIdentityName'
-        value: '${search_name}-identity'
-      } 
-    ]    
-    scriptContent: '''
-$debug = $true
-$token = Get-AzAccessToken -ResourceUrl "https://search.azure.com/"
-$headers = @{
-  'Authorization' = "Bearer $($token.Token)"
-  'Content-Type' = 'application/json'
-}
-
-$body = $env:dataSource
-$body = $body -replace 'PROJECT_NAME', $env:projectName
-$body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId
-$body = $body -replace 'RESOURCEGROUP_NAME', $env:rgName
-$body = $body -replace 'STORAGEACCOUNT_NAME', $env:storageAcctName
-$body = $body -replace 'CONTAINER_NAME', $env:containerName
-if ($debug) {
-  $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
-} else {
-    $url="https://$($env:searchName).search.windows.net/datasources('$($env:projectName)-datasource')?allowIndexDowntime=True&api-version=2024-07-01"
-}
-Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
-
-$body = $env:synonymMap
-$body = $body -replace 'PROJECT_NAME', $env:projectName
-if ($debug) {
-  $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
-} else {
-    $url="https://$($env:searchName).search.windows.net/synonymmaps('$($env:projectName)-map')?allowIndexDowntime=True&api-version=2024-07-01"
-}
-Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
-
-$body = $env:index
-$body = $body -replace 'PROJECT_NAME', $env:projectName
-$body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId
-$body = $body -replace 'RESOURCEGROUP_NAME', $env:rgName
-$body = $body -replace 'OPENAI_ENDPOINT', $env:openaiEndpoint
-$body = $body -replace 'SEARCH_IDENTITY_NAME', $env:searchIdentityName
-if ($debug) {
-  $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
-} else {
-    $url="https://$($env:searchName).search.windows.net/indexes('$($env:PROJECT_NAME)-index')?allowIndexDowntime=True&api-version=2024-07-01"
-}
-Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
-
-$body = $env:skillset
-$body = $body -replace 'PROJECT_NAME', $env:projectName
-$body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId
-$body = $body -replace 'RESOURCEGROUP_NAME', $env:rgName
-$body = $body -replace 'OPENAI_ENDPOINT', $env:openaiEndpoint
-$body = $body -replace 'SEARCH_IDENTITY_NAME', $env:searchIdentityName
-if ($debug) {
-  $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
-} else {
-    $url="https://$($env:searchName).search.windows.net/skillsets('$($env:projectName)-skillset')?allowIndexDowntime=True&api-version=2024-07-01"
-}
-Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
-
-$body = $env:indexer
-$body = $body -replace 'PROJECT_NAME', $env:projectName
-$body = $body -replace 'SUBSCRIPTION_ID', $env:subscriptionId
-$body = $body -replace 'RESOURCEGROUP_NAME', $env:rgName
-$body = $body -replace 'OPENAI_ENDPOINT', $env:openaiEndpoint
-$body = $body -replace 'SEARCH_IDENTITY_NAME', $env:searchIdentityName
-if ($debug) {
-  $url="https://mrfunctions.azurewebsites.net/api/ReceiveCall?searchName=$($env:searchName)"
-} else {
-    $url="https://$($env:searchName).search.windows.net/indexers('$($env:projectName)-indexer')?allowIndexDowntime=True&api-version=2024-07-01"
-}
-Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
-    '''
-    timeout: 'PT30M'
-    cleanupPreference: 'OnSuccess'
-    retentionInterval: 'P1D'
-  }
-}
-
 output id string = search.id
 output endpoint string = 'https://${search_name}.search.windows.net/'
 output name string = search_name
+output searchSAIdentityPrincipalId string = search.identity.principalId
+output searchScriptIdentityId string = scriptIdentity.id
+// output searchUAIdentityName string = search.identity.userAssignedIdentities[searchUAIdentityPrincipalId].name
