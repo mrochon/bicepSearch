@@ -163,18 +163,5 @@ module analytics 'services/dashboard.bicep' = {
   }
 }
 
-// module setupIndex 'scripts/searchSetup.bicep' = {
-//   scope: rg
-//   name: 'setupIndex'
-//   params: {
-//     location: location
-//     uniqueName: uniqueName
-//     searchName: 'search-${uniqueName}'
-//     dataSourceName: 'sourceData'
-//     storageAcctName: 'storage${uniqueName}'
-//     containerName: containers[0]
-//   }
-// }
-
 output aiEndpoint string = ai.outputs.endpoint
 output searchEndpoint string = searchService.outputs.endpoint

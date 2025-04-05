@@ -68,7 +68,8 @@ resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01
 
 resource search2EmbeddingRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid('embedding', searchUAIdentityPrincipalId, '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd')
-  scope: deployment[0]
+  // scope: deployment[0]
+  scope: account
   properties: {
     //delegatedManagedIdentityResourceId: searchManagedIdentityId
     description: 'Cognitive Services OpenAI User'
