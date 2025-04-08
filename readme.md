@@ -1,10 +1,37 @@
-## Setup
+## AI Search basic deployment bicep
 
-Populate ./json folder with definitions of AI Search REST payloads.
+### Purpose
 
-## Execution
+Deploy AI Search and related infrastructure needed to create vectorized index (OpenAI for embedding and Storage Account for
+document source). Includes deployment of index, indexer, data source and skillset definitions.
+
+### Deployed architecture
+
+This deployment creates the following objects:
+
+- Resource group
+- AI Search instance with:
+-- Datasource
+-- Index
+-- Indexer
+-- Skillset
+-- Synonym Map
+- Storage Account with:
+-- Blob container (used by the above Data Source_)
+- Cognitive Service instance with:
+-- text-embedding-003-small model deployment (used by above Skillset)
+- Managed Identities to manage access between these objects.
+- Role assignments
+
+![Architecture](docs/architecture.png)
+
+### Setup
+
+1. In the **json** folder, edit json definitions of your index, indexer, skillset, synonym map and data source. Do not modify the capitalized strings (e.g. PROJECT_NAME). Their values will be set by your bicep parameters.
+2. Run **main.bicep** deployment
 
 ```
+az login
 az deployment sub create --name bicespsearch2 \
   --template-file main.bicep \
   --parameters @main.parameters.json \
@@ -17,19 +44,11 @@ az deployment sub create --name bicespsearch2 \
 az deployment sub delete --name rg-searchbicep2
 ```
 
-```
-./test.ps1 'rg-bicepsearch2' 'search-t43soeccwpx5s' datasource storaget43soeccwpx5s searchdata '7cee9002-39e6-44f8-a673-6f8680f8f4ad'
-```
+### Debugging
 
-```
-$url="https://$($env:searchName).search.windows.net/datasources('$($env:dataSourceName)')?allowIndexDowntime=True&api-version=2024-07-01"
-```
+PowerShell script contained in **deploymentScripts** will attempt to create the AI Search artifacts based on your definitions in the **json** folder. Errors will be send to a REST endpoint included in the script. Replace it with your own if you bicep reports script errors so you can determine causes.
 
-## Debugging
-
-To debug possible errors in the script components of the bicep calling http REST services, use an Azure Function to display request details in log file.
-Replace the call to the REST service with a call to this function, with same parameters and body.
-You can then replicate the call to the original service to see what errors it returns.
+Following source is an example of such a function that may be deployed to Azure Functions.
 
 ```
 curl -X POST -H "Content-Type: application/json" -d '{"key1":"value1", "key2":"value2"}' https://mrfunctions.azurewebsites.net/api/ReceiveCall?

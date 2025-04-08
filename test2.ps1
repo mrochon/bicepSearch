@@ -22,3 +22,5 @@ function InvokeWithRetry($url, $headers, $body) {
   } | ConvertTo-Json
   $url="https://mrsearch.search.windows.net/datasources('xyz-datasource')?allowIndexDowntime=True&api-version=2024-07-01"
   InvokeWithRetry $url $headers $body
+
+  

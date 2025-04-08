@@ -5,7 +5,6 @@ $Credential = New-Object -TypeName System.Management.Automation.PSCredential -Ar
 
 Connect-AzAccount -ServicePrincipal -TenantId $TenantId -Credential $Credential -SubscriptionId '7cee9002-39e6-44f8-a673-6f8680f8f4ad'
 
-
 $token = Get-AzAccessToken -ResourceUrl "https://search.azure.com/"
 $headers = @{
   'Authorization' = "Bearer $($token.Token)"

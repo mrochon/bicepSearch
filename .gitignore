@@ -1,2 +1,4 @@
 .env
 results/
+generated/
+test*.ps1
