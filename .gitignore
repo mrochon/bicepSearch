@@ -2,3 +2,4 @@
 results/
 generated/
 test*.ps1
+output-values.json

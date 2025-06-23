@@ -32,16 +32,27 @@ This deployment creates the following objects:
 
 ```
 az login
-az deployment sub create --name bicespsearch2 \
+az deployment sub create --name searchDeployment \
   --template-file main.bicep \
   --parameters @main.parameters.json \
   --location 'eastus' \
-  --subscription '7cee9002-39e6-44f8-a673-6f8680f8f4ad'
+  --subscription '7cee9002-39e6-44f8-a673-6f8680f8f4ad' > output-values.json
 
 ```
 
 ```
 az deployment sub delete --name rg-searchbicep2
+```
+
+```
+az deployment subscription show \
+  --subscription '7cee9002-39e6-44f8-a673-6f8680f8f4ad' \
+  --name bicepsearch2 \
+  --query properties.outputs
+
+az deployment group show \
+  --resource-group rg-bicepsearch \
+  --name bicepsearch2 
 ```
 
 ### Debugging

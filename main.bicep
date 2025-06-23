@@ -55,7 +55,7 @@ param containers array = [
   'searchdata'
 ]
 
-var uniqueName = toLower(uniqueString(subscription().id, projectName, location))
+var uniqueName = toLower(uniqueString(subscription().id, projectName))
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: 'rg-${projectName}'
@@ -134,19 +134,20 @@ module searchService 'services/search.bicep' = {
   }
 }
 
-module deploymentScripts 'services/deploymentScripts.bicep' = {
-  scope: rg
-  name: 'scripts'
-  params: {
-    projectName: projectName
-    openaiEndpoint: ai.outputs.endpoint
-    searchScriptIdentityId: searchService.outputs.searchScriptIdentityId  
-    searchName: searchService.outputs.name
-    storageAcctName: storage.outputs.name
-    containerName: containers[0]  
-    searchUAIdentityName: managedIdentities.outputs.searchUAIdentityName
-  }
-}
+// Uncomment script identity in Search if you uncomment this resource
+// module deploymentScripts 'services/deploymentScripts.bicep' = {
+//   scope: rg
+//   name: 'scripts'
+//   params: {
+//     projectName: projectName
+//     openaiEndpoint: ai.outputs.endpoint
+//     searchScriptIdentityId: searchService.outputs.searchScriptIdentityId  
+//     searchName: searchService.outputs.name
+//     storageAcctName: storage.outputs.name
+//     containerName: containers[0]  
+//     searchUAIdentityName: managedIdentities.outputs.searchUAIdentityName
+//   }
+// }
 
 @description('Creates Log Analytics wkspace and related objects')
 module analytics 'services/dashboard.bicep' = {
@@ -163,5 +164,14 @@ module analytics 'services/dashboard.bicep' = {
   }
 }
 
-output aiEndpoint string = ai.outputs.endpoint
+output projectName string = projectName
+output subscriptionId string = subscription().id
+output rgName string = rg.name
+output searchName string = searchService.outputs.name
 output searchEndpoint string = searchService.outputs.endpoint
+output storageAcctName string = storage.outputs.name
+output containerName string = containers[0]
+output searchIdentityName string = managedIdentities.outputs.searchUAIdentityName
+output openaiEndpoint string = ai.outputs.endpoint
+
+
