@@ -35,6 +35,7 @@ param replicaCount int = 1
 ])
 param semanticSearch string = 'free'
 param searchUAIdentityId string
+param aiUAIdentityPrincipalId string
 
 var search_name = 'search-${uniqueName}'
 
@@ -61,6 +62,19 @@ resource search 'Microsoft.Search/searchServices@2024-06-01-preview' = {
     semanticSearch: semanticSearch
   }
   sku: { name: sku }
+}
+
+// Allow AI to access search service
+resource aiRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('ai', '1407120a-92aa-4202-b7e9-c0e197c71c8f')
+  scope: search
+  properties: {
+    //delegatedManagedIdentityResourceId: searchManagedIdentityId
+    description: 'Search Index Data Reader'
+    principalId: aiUAIdentityPrincipalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '1407120a-92aa-4202-b7e9-c0e197c71c8f')
+  }
 }
 
 // Since scripModule is removed

@@ -105,6 +105,7 @@ module ai 'services/ai.bicep' = {
     tags: tags
     location: location
     name: 'ai-${uniqueName}'
+    aiUAIdentityId: managedIdentities.outputs.aiUAIdentityId
     searchUAIdentityPrincipalId: managedIdentities.outputs.searchUAIdentityPrincipalId
   }
 }
@@ -131,6 +132,7 @@ module searchService 'services/search.bicep' = {
     replicaCount: searchReplicaCount
     sku: searchSkuName
     searchUAIdentityId: managedIdentities.outputs.searchUAIdentityId
+    aiUAIdentityPrincipalId: managedIdentities.outputs.aiUAIdentityPrincipalId    
   }
 }
 
