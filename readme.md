@@ -36,8 +36,8 @@ az deployment sub create --name searchDeployment \
   --template-file main.bicep \
   --parameters @main.parameters.json \
   --location 'eastus' \
-  --subscription '7cee9002-39e6-44f8-a673-6f8680f8f4ad' > output-values.json
-
+  --subscription '7cee9002-39e6-44f8-a673-6f8680f8f4ad' \
+  --query properties.outputs > bicepOutput.json
 ```
 
 ```
