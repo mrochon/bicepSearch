@@ -1,0 +1,33 @@
+{
+  "name": "INDEX_NAME-indexer",
+  "description": null,
+  "dataSourceName": "INDEX_NAME-datasource",
+  "skillsetName": "INDEX_NAME-skillset",
+  "targetIndexName": "INDEX_NAME-index",
+  "disabled": null,
+  "schedule": null,
+  "parameters": {
+    "batchSize": null,
+    "maxFailedItems": null,
+    "maxFailedItemsPerBatch": null,
+    "configuration": {
+      "dataToExtract": "contentAndMetadata",
+      "parsingMode": "json"
+    }
+  },
+  "fieldMappings": [
+    {
+      "sourceFieldName": "metadata_storage_name",
+      "targetFieldName": "url",
+      "mappingFunction": null
+    }
+  ],
+  "outputFieldMappings": [
+    {
+      "sourceFieldName": "/document/embedding/*",
+      "targetFieldName": "contentVector",
+      "mappingFunction": null
+    }
+  ],
+  "encryptionKey": null
+}

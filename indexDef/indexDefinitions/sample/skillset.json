@@ -1,0 +1,33 @@
+{
+  "@odata.etag": "\"0x8DDAA301FA575E0\"",
+  "name": "INDEX_NAME-skillset",
+  "description": "Skillset to generate embeddings",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill",
+      "name": "#1",
+      "context": "/document",
+      "resourceUri": "OPENAI_ENDPOINT",
+      "deploymentId": "EMBEDDING_DEPLOYMENT_NAME",
+      "dimensions": 1536,
+      "modelName": "EMBEDDING_DEPLOYMENT_NAME",
+      "inputs": [
+        {
+          "name": "text",
+          "source": "/document/description",
+          "inputs": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "embedding",
+          "targetName": "embedding"
+        }
+      ],
+      "authIdentity": {
+        "@odata.type": "#Microsoft.Azure.Search.DataUserAssignedIdentity",
+        "userAssignedIdentity": "SUBSCRIPTION_ID/resourceGroups/RESOURCEGROUP_NAME/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SEARCH_IDENTITY_NAME"
+      }
+    }
+  ]
+}

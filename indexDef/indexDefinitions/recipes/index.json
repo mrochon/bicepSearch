@@ -1,5 +1,6 @@
 {
-  "name": "PROJECT_NAME-index",
+  "@odata.etag": "\"0x8DDAA300791EE60\"",
+  "name": "INDEX_NAME-index",
   "defaultScoringProfile": "",
   "fields": [
     {
@@ -16,39 +17,15 @@
       "synonymMaps": []
     },
     {
-      "name": "parent_id",
+      "name": "url",
       "type": "Edm.String",
-      "filterable": true
-    },
-    {
-      "name": "blob_uri",
-      "type": "Edm.String",
-      "filterable": true
-    },
-    {
-      "name": "location",
-      "type": "Edm.String",
-      "searchable": true,
-      "filterable": false,
-      "retrievable": true,
-      "stored": true,
-      "sortable": false,
-      "facetable": false,
-      "key": false,
-      "analyzer": "standard.lucene",
-      "synonymMaps": []
-    },
-    {
-      "name": "path",
-      "type": "Edm.String",
-      "searchable": true,
+      "searchable": false,
       "filterable": true,
       "retrievable": true,
       "stored": true,
-      "sortable": false,
-      "facetable": false,
+      "sortable": true,
+      "facetable": true,
       "key": false,
-      "analyzer": "standard.lucene",
       "synonymMaps": []
     },
     {
@@ -65,7 +42,7 @@
       "synonymMaps": []
     },
     {
-      "name": "text",
+      "name": "description",
       "type": "Edm.String",
       "searchable": true,
       "filterable": false,
@@ -75,52 +52,56 @@
       "facetable": false,
       "key": false,
       "analyzer": "standard.lucene",
-      "synonymMaps": [
-        "PROJECT_NAME-map"
-      ]
+      "synonymMaps": []
     },
     {
-      "name": "textVector",
+      "name": "ingredients",
+      "type": "Collection(Edm.String)",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "stored": true,
+      "sortable": false,
+      "facetable": false,
+      "key": false,
+      "analyzer": "standard.lucene",
+      "synonymMaps": []
+    },
+    {
+      "name": "metadata_storage_name",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "stored": true,
+      "sortable": true,
+      "facetable": true,
+      "key": false,
+      "synonymMaps": []
+    },
+    {
+      "name": "description_vector",
       "type": "Collection(Edm.Single)",
       "searchable": true,
       "filterable": false,
       "retrievable": true,
+      "stored": true,
       "sortable": false,
       "facetable": false,
       "key": false,
-      "indexAnalyzer": null,
-      "searchAnalyzer": null,
-      "analyzer": null,
       "dimensions": 1536,
       "vectorSearchProfile": "vectorProfile",
       "synonymMaps": []
-    },
-    {
-      "name": "keywords",
-      "type": "Collection(Edm.String)",
-      "searchable": false,
-      "filterable": true,
-      "retrievable": true,
-      "sortable": false,
-      "facetable": false,
-      "key": false,
-      "indexAnalyzer": null,
-      "searchAnalyzer": null,
-      "analyzer": null,
-      "synonymMaps": []
     }
   ],
-  "corsOptions": null,
+  "scoringProfiles": [],
   "suggesters": [],
   "analyzers": [],
   "tokenizers": [],
   "tokenFilters": [],
   "charFilters": [],
-  "encryptionKey": null,
   "similarity": {
-    "@odata.type": "#Microsoft.Azure.Search.BM25Similarity",
-    "k1": null,
-    "b": null
+    "@odata.type": "#Microsoft.Azure.Search.BM25Similarity"
   },
   "semantic": {
     "defaultConfiguration": "semantic-configuration",
@@ -133,14 +114,10 @@
           },
           "prioritizedContentFields": [
             {
-              "fieldName": "text"
+              "fieldName": "description"
             }
           ],
-          "prioritizedKeywordsFields": [
-            {
-              "fieldName": "keywords"
-            }
-          ]
+          "prioritizedKeywordsFields": []
         }
       }
     ]
@@ -155,16 +132,14 @@
           "m": 4,
           "efConstruction": 400,
           "efSearch": 500
-        },
-        "exhaustiveKnnParameters": null
+        }
       }
     ],
     "profiles": [
       {
         "name": "vectorProfile",
         "algorithm": "algorithm",
-        "vectorizer": "vectorizer",
-        "compression": null
+        "vectorizer": "vectorizer"
       }
     ],
     "vectorizers": [
@@ -172,15 +147,14 @@
         "name": "vectorizer",
         "kind": "azureOpenAI",
         "azureOpenAIParameters": {
-          "resourceUri": "OPENAI_ENDPOINT",
+          "resourceUri": "https://ai-uxyrvemtzmwv6.openai.azure.com",
           "deploymentId": "text-embedding-3-small",
           "modelName": "text-embedding-3-small",
           "authIdentity": {
             "@odata.type": "#Microsoft.Azure.Search.DataUserAssignedIdentity",
-            "userAssignedIdentity": "/subscriptions/SUBSCRIPTION_ID/resourcegroups/RESOURCEGROUP_NAME/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SEARCH_IDENTITY_NAME"
+            "userAssignedIdentity": "SUBSCRIPTION_ID/resourcegroups/RESOURCEGROUP_NAME/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SEARCH_IDENTITY_NAME"
           }
-        },
-        "customWebApiParameters": null
+        }
       }
     ],
     "compressions": []

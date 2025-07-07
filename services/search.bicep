@@ -1,12 +1,8 @@
-
-
 metadata description = 'Creates an Azure AI Search instance.'
-param uniqueName string
 param location string = resourceGroup().location
 param tags object = {}
 
 param sku string = 'standard'
-
 
 param disabledDataExfiltrationOptions array = []
 param encryptionWithCmk object = {
@@ -34,19 +30,20 @@ param replicaCount int = 1
   'standard'
 ])
 param semanticSearch string = 'free'
-param searchUAIdentityId string
-param aiUAIdentityPrincipalId string
+param searchIdentityId string
+param aiProjectPrincipalId string
 
-var search_name = 'search-${uniqueName}'
+param serviceName string 
 
 resource search 'Microsoft.Search/searchServices@2024-06-01-preview' = {
-  name: search_name
+  name: serviceName
   location: location
   tags: tags
   identity: {
-    type: 'SystemAssigned, UserAssigned'
+    // SystemAssigned has to be created, otherwise indexer throws: Ensure managed identity is enabled for your service
+    type: 'SystemAssigned,UserAssigned'
     userAssignedIdentities: {
-      '${searchUAIdentityId}': {}
+      '${searchIdentityId}': {}
     }
   }
   properties: {
@@ -64,18 +61,33 @@ resource search 'Microsoft.Search/searchServices@2024-06-01-preview' = {
   sku: { name: sku }
 }
 
-// Allow AI to access search service
-resource aiRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('ai', '1407120a-92aa-4202-b7e9-c0e197c71c8f')
+// Allow AI Project to access search service
+var dataReader = '1407120a-92aa-4202-b7e9-c0e197c71c8f' // Search Index Data Reader
+resource aiReaderAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(serviceName, dataReader)
   scope: search
   properties: {
     //delegatedManagedIdentityResourceId: searchManagedIdentityId
     description: 'Search Index Data Reader'
-    principalId: aiUAIdentityPrincipalId
+    principalId: aiProjectPrincipalId
     principalType: 'ServicePrincipal'
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', '1407120a-92aa-4202-b7e9-c0e197c71c8f')
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', dataReader)
   }
 }
+var svcContributor = '7ca78c08-252a-4471-8644-bb5ff32d4ba0' // Search Service Contributor
+resource aiContrAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(serviceName, svcContributor)
+  scope: search
+  properties: {
+    //delegatedManagedIdentityResourceId: searchManagedIdentityId
+    description: 'Search Service Contributor'
+    principalId: aiProjectPrincipalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', svcContributor)
+  }
+}
+
+
 
 // Since scripModule is removed
 // resource scriptIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' = {
@@ -97,8 +109,9 @@ resource aiRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' =
 // }
 
 output id string = search.id
-output endpoint string = 'https://${search_name}.search.windows.net/'
-output name string = search_name
-output searchSAIdentityPrincipalId string = search.identity.principalId
+output endpoint string = 'https://${serviceName}.search.windows.net/'
+output name string = serviceName
+output searchIdentityPrincipalId string = search.identity.userAssignedIdentities[searchIdentityId].principalId
+output searchSysAssignedPrincipalId string = search.identity.principalId
 //output searchScriptIdentityId string = scriptIdentity.id
 // output searchUAIdentityName string = search.identity.userAssignedIdentities[searchUAIdentityPrincipalId].name

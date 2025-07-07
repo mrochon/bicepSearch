@@ -3,10 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "projectName": {
-      "value": "bicepsearch"
+      "value": "sports2"
     },
     "location": {
-      "value": "eastus"
+      "value": "eastus2"
     },
     "searchSkuName": {
       "value": "standard"
@@ -19,6 +19,11 @@
     },
     "searchPublicNetworkAccess": {
       "value": "enabled"
+    },
+    "containers": {
+      "value": [
+        "recipes", "sops"
+      ]
     }
   }
 }

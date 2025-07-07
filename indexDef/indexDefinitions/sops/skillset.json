@@ -1,5 +1,5 @@
 {
-  "name": "PROJECT_NAME-skillset",
+  "name": "INDEX_NAME-skillset",
   "description": "",
   "skills": [
     {
@@ -30,14 +30,14 @@
       "name": "#3",
       "description": null,
       "resourceUri": "OPENAI_ENDPOINT",
-      "deploymentId": "text-embedding-3-small",
-      "modelName": "text-embedding-3-small",
+      "deploymentId": "EMBEDDING_DEPLOYMENT_NAME",
+      "modelName": "EMBEDDING_DEPLOYMENT_NAME",
       "context": "/document/chunks/*",
       "inputs": [
-        {
-          "name": "text",
-          "source": "/document/chunks/*"
-        }
+      {
+        "name": "text",
+        "source": "/document/chunks/*"
+      }
       ],
       "outputs": [
         {
@@ -47,35 +47,35 @@
       ],
       "authIdentity": {
         "@odata.type": "#Microsoft.Azure.Search.DataUserAssignedIdentity",
-        "userAssignedIdentity": "/subscriptions/SUBSCRIPTION_ID/resourcegroups/RESOURCEGROUP_NAME/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SEARCH_IDENTITY_NAME"
+        "userAssignedIdentity": "SUBSCRIPTION_ID/resourcegroups/RESOURCEGROUP_NAME/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SEARCH_IDENTITY_NAME"
       }
     }
   ],
   "indexProjections": {
     "selectors": [
       {
-        "targetIndexName": "PROJECT_NAME-index",
+        "targetIndexName": "INDEX_NAME-index",
         "parentKeyFieldName": "parent_id",
         "sourceContext": "/document/chunks/*",
         "mappings": [
           {
-            "name": "blob_uri",
+            "name": "url",
             "source": "/document/metadata_storage_path"
+          },
+                    {
+            "name": "file_path",
+            "source": "/document/filePath"
           },
           {
             "name": "title",
             "source": "/document/title"
           },
           {
-            "name": "keywords",
-            "source": "/document/keywords"
-          },
-          {
-            "name": "text",
+            "name": "content",
             "source": "/document/chunks/*"
           },
           {
-            "name": "textVector",
+            "name": "contentVector",
             "source": "/document/chunks/*/vector"
           }
         ]

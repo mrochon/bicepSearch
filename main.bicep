@@ -6,7 +6,7 @@ targetScope = 'subscription'
 param projectName string
 
 @minLength(1)
-@description('Llocation for all resources')
+@description('Location for all resources')
 param location string
 
 @description('Tags to be applied top all resources')
@@ -51,35 +51,80 @@ param searchPartitionCount int = 1
 ])
 param searchPublicNetworkAccess string = 'enabled'
 
-param containers array = [
-  'searchdata'
+
+@description('Container names. Use same names as the future index names.')
+param containers array
+
+@description('Model deployments for OpenAI. First deployment must be for embedding.')
+@minLength(1)
+param deployments array = [
+  {
+    name: 'text-embedding-3-small'
+    model: {
+      format: 'OpenAI'
+      name: 'text-embedding-3-small'
+      version: '1'
+    }
+    sku : {
+      name: 'Standard'
+      capacity: 50
+    }
+  }
+  {
+    name: 'gpt-4.1-mini'
+    model: {
+      format: 'OpenAI'
+      name: 'gpt-4.1-mini'
+      version: '2025-04-14'
+    }
+    sku : {
+      name: 'GlobalStandard'
+      capacity: 150
+    }
+  }  
 ]
 
 var uniqueName = toLower(uniqueString(subscription().id, projectName))
 
+var rgName = 'rg-${projectName}-${uniqueName}'
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: 'rg-${projectName}'
+  name: rgName
   location: location
   tags: tags
 }
 
+var searchManagedIdentityName = '${searchServiceName}-identity'
+// A user assigned identity is required for by index definition
 module managedIdentities 'services/managedIdentities.bicep' = {
   scope: rg
   name: 'managedIdentities'
   params: {
     tags: tags
     location: location
-    uniqueName: uniqueName
+    searchManagedIdentityName: searchManagedIdentityName
   }
 }
 
+var foundryName = 'foundry-${uniqueName}'
+module aiFoundry 'services/aiFoundry.bicep' = {
+  scope: rg
+  name: 'aiFoundry'
+  params: {
+    location: location
+    aiFoundryName: foundryName
+    aiProjectName: projectName
+    deployments: deployments
+  }
+}
+
+var storageName =   'storage${uniqueName}'
 module storage 'services/storage.bicep' = {
   scope: rg
   name: 'storage'
   params: {
     tags: tags
     location: location
-    uniqueName: uniqueName
+    storageName: storageName
     containers: containers
     accessTier: 'Hot'
     allowBlobPublicAccess: false
@@ -93,23 +138,12 @@ module storage 'services/storage.bicep' = {
     kind: 'StorageV2'
     minimumTlsVersion: 'TLS1_2'
     supportsHttpsTrafficOnly: true
-    searchSAIdentityPrincipalId: searchService.outputs.searchSAIdentityPrincipalId
+    // searchSAIdentityPrincipalId: searchService.outputs.searchSAIdentityPrincipalId
+    searchPrincipalId: searchService.outputs.searchSysAssignedPrincipalId    
   }
 }
 
-@description('Creates an Azure OpenAI services.')
-module ai 'services/ai.bicep' = {
-  scope: rg
-  name: 'ai'
-  params: {
-    tags: tags
-    location: location
-    name: 'ai-${uniqueName}'
-    aiUAIdentityId: managedIdentities.outputs.aiUAIdentityId
-    searchUAIdentityPrincipalId: managedIdentities.outputs.searchUAIdentityPrincipalId
-  }
-}
-
+var searchServiceName = 'search-${uniqueName}'
 @description('Creates an Azure AI Search service.')
 module searchService 'services/search.bicep' = {
   scope: rg
@@ -117,7 +151,7 @@ module searchService 'services/search.bicep' = {
   params: {
     tags: tags
     location: location
-    uniqueName: uniqueName
+    serviceName: searchServiceName
     disabledDataExfiltrationOptions: []
     encryptionWithCmk: {
       enforcement: 'Unspecified'
@@ -131,25 +165,10 @@ module searchService 'services/search.bicep' = {
     publicNetworkAccess: searchPublicNetworkAccess
     replicaCount: searchReplicaCount
     sku: searchSkuName
-    searchUAIdentityId: managedIdentities.outputs.searchUAIdentityId
-    aiUAIdentityPrincipalId: managedIdentities.outputs.aiUAIdentityPrincipalId    
+    searchIdentityId: managedIdentities.outputs.searchIdentityId
+    aiProjectPrincipalId: aiFoundry.outputs.aiProjectPrincipalId   
   }
 }
-
-// Uncomment script identity in Search if you uncomment this resource
-// module deploymentScripts 'services/deploymentScripts.bicep' = {
-//   scope: rg
-//   name: 'scripts'
-//   params: {
-//     projectName: projectName
-//     openaiEndpoint: ai.outputs.endpoint
-//     searchScriptIdentityId: searchService.outputs.searchScriptIdentityId  
-//     searchName: searchService.outputs.name
-//     storageAcctName: storage.outputs.name
-//     containerName: containers[0]  
-//     searchUAIdentityName: managedIdentities.outputs.searchUAIdentityName
-//   }
-// }
 
 @description('Creates Log Analytics wkspace and related objects')
 module analytics 'services/dashboard.bicep' = {
@@ -166,14 +185,25 @@ module analytics 'services/dashboard.bicep' = {
   }
 }
 
+module roleAssignments 'services/roleAssignments.bicep' = {
+  scope: rg
+  name: 'roleAssignments'
+  params: {
+    aiFoundryName: foundryName
+    searchPrincipalId: searchService.outputs.searchIdentityPrincipalId
+  }
+}
+
 output projectName string = projectName
 output subscriptionId string = subscription().id
 output rgName string = rg.name
 output searchName string = searchService.outputs.name
 output searchEndpoint string = searchService.outputs.endpoint
 output storageAcctName string = storage.outputs.name
-output containerName string = containers[0]
-output searchIdentityName string = managedIdentities.outputs.searchUAIdentityName
-output openaiEndpoint string = ai.outputs.endpoint
+output containers array = containers
+output searchIdentityName string = managedIdentities.outputs.searchIdentityName
+output openaiEndpoint string = 'https://${foundryName}.openai.azure.com'
+output embeddingDeployment string = deployments[0].name
+//output foundryEndpoints object = aiFoundry.outputs.endpoints
 
 

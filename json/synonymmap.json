@@ -1,5 +1,0 @@
-{
-  "name": "PROJECT_NAME-map",
-  "format": "solr",
-  "synonyms": "svc=>service\nvdi,inventory,stock"
-}

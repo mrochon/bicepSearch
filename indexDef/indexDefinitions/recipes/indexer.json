@@ -1,0 +1,35 @@
+{
+  "@odata.context": "https://search-uxyrvemtzmwv6.search.windows.net/$metadata#indexers/$entity",
+  "@odata.etag": "\"0x8DDAA307B373CB4\"",
+  "name": "INDEX_NAME-indexer",
+  "description": null,
+  "dataSourceName": "INDEX_NAME-datasource",
+  "skillsetName": "INDEX_NAME-skillset",
+  "targetIndexName": "INDEX_NAME-index",
+  "disabled": null,
+  "schedule": null,
+  "parameters": {
+    "batchSize": null,
+    "maxFailedItems": null,
+    "maxFailedItemsPerBatch": null,
+    "configuration": {
+      "dataToExtract": "contentAndMetadata",
+      "parsingMode": "json"
+    }
+  },
+  "fieldMappings": [
+    {
+      "sourceFieldName": "metadata_storage_name",
+      "targetFieldName": "metadata_storage_name",
+      "mappingFunction": null
+    }
+  ],
+  "outputFieldMappings": [
+    {
+      "sourceFieldName": "/document/embedding/*",
+      "targetFieldName": "description_vector",
+      "mappingFunction": null
+    }
+  ],
+  "encryptionKey": null
+}
