@@ -30,8 +30,8 @@ This deployment creates the following objects:
 1. In the **json** folder, edit json definitions of your index, indexer, skillset, synonym map and data source. Do not modify the capitalized strings (e.g. PROJECT_NAME). Their values will be set by your bicep parameters.
 2. Run **main.bicep** deployment
 
-```
-az login
+```Bash
+az login [--tenant <domain>]
 az deployment sub create --name searchDeployment \
   --template-file main.bicep \
   --parameters @main.parameters.json \

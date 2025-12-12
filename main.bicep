@@ -10,7 +10,7 @@ param projectName string
 param location string
 
 @description('Tags to be applied top all resources')
-var tags = {
+param tags object = {
   // Tag all resources with the environment name.
   'azd-env-name': projectName
 }
@@ -70,18 +70,18 @@ param deployments array = [
       capacity: 50
     }
   }
-  {
-    name: 'gpt-4.1-mini'
-    model: {
-      format: 'OpenAI'
-      name: 'gpt-4.1-mini'
-      version: '2025-04-14'
-    }
-    sku : {
-      name: 'GlobalStandard'
-      capacity: 150
-    }
-  }  
+  // {
+  //   name: 'gpt-4.1-mini'
+  //   model: {
+  //     format: 'OpenAI'
+  //     name: 'gpt-4.1-mini'
+  //     version: '2025-04-14'
+  //   }
+  //   sku : {
+  //     name: 'GlobalStandard'
+  //     capacity: 150
+  //   }
+  // }  
 ]
 
 var uniqueName = toLower(uniqueString(subscription().id, projectName))

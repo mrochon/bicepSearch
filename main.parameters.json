@@ -3,10 +3,15 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "projectName": {
-      "value": "sports2"
+      "value": "sports3"
     },
     "location": {
       "value": "eastus2"
+    },
+    "tags": {
+      "value": {
+        "azd-env-name": "sports3"
+      }
     },
     "searchSkuName": {
       "value": "standard"
@@ -22,7 +27,7 @@
     },
     "containers": {
       "value": [
-        "recipes", "sops"
+        "samples"
       ]
     }
   }
