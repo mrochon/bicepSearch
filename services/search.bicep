@@ -30,7 +30,6 @@ param replicaCount int = 1
   'standard'
 ])
 param semanticSearch string = 'free'
-param searchIdentityId string
 param aiProjectPrincipalId string
 
 param serviceName string 
@@ -41,10 +40,7 @@ resource search 'Microsoft.Search/searchServices@2024-06-01-preview' = {
   tags: tags
   identity: {
     // SystemAssigned has to be created, otherwise indexer throws: Ensure managed identity is enabled for your service
-    type: 'SystemAssigned,UserAssigned'
-    userAssignedIdentities: {
-      '${searchIdentityId}': {}
-    }
+    type: 'SystemAssigned'
   }
   properties: {
     disableLocalAuth: true
@@ -111,7 +107,6 @@ resource aiContrAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
 output id string = search.id
 output endpoint string = 'https://${serviceName}.search.windows.net/'
 output name string = serviceName
-output searchIdentityPrincipalId string = search.identity.userAssignedIdentities[searchIdentityId].principalId
 output searchSysAssignedPrincipalId string = search.identity.principalId
 //output searchScriptIdentityId string = scriptIdentity.id
 // output searchUAIdentityName string = search.identity.userAssignedIdentities[searchUAIdentityPrincipalId].name

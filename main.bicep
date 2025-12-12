@@ -93,18 +93,6 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   tags: tags
 }
 
-var searchManagedIdentityName = '${searchServiceName}-identity'
-// A user assigned identity is required for by index definition
-module managedIdentities 'services/managedIdentities.bicep' = {
-  scope: rg
-  name: 'managedIdentities'
-  params: {
-    tags: tags
-    location: location
-    searchManagedIdentityName: searchManagedIdentityName
-  }
-}
-
 var foundryName = 'foundry-${uniqueName}'
 module aiFoundry 'services/aiFoundry.bicep' = {
   scope: rg
@@ -139,7 +127,7 @@ module storage 'services/storage.bicep' = {
     minimumTlsVersion: 'TLS1_2'
     supportsHttpsTrafficOnly: true
     // searchSAIdentityPrincipalId: searchService.outputs.searchSAIdentityPrincipalId
-    searchPrincipalId: searchService.outputs.searchSysAssignedPrincipalId    
+    searchPrincipalId: searchService.outputs.searchSysAssignedPrincipalId
   }
 }
 
@@ -165,7 +153,7 @@ module searchService 'services/search.bicep' = {
     publicNetworkAccess: searchPublicNetworkAccess
     replicaCount: searchReplicaCount
     sku: searchSkuName
-    searchIdentityId: managedIdentities.outputs.searchIdentityId
+
     aiProjectPrincipalId: aiFoundry.outputs.aiProjectPrincipalId   
   }
 }
@@ -190,7 +178,7 @@ module roleAssignments 'services/roleAssignments.bicep' = {
   name: 'roleAssignments'
   params: {
     aiFoundryName: foundryName
-    searchPrincipalId: searchService.outputs.searchIdentityPrincipalId
+    searchPrincipalId: searchService.outputs.searchSysAssignedPrincipalId
   }
 }
 
@@ -201,7 +189,6 @@ output searchName string = searchService.outputs.name
 output searchEndpoint string = searchService.outputs.endpoint
 output storageAcctName string = storage.outputs.name
 output containers array = containers
-output searchIdentityName string = managedIdentities.outputs.searchIdentityName
 output openaiEndpoint string = 'https://${foundryName}.openai.azure.com'
 output embeddingDeployment string = deployments[0].name
 //output foundryEndpoints object = aiFoundry.outputs.endpoints

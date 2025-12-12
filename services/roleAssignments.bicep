@@ -12,3 +12,15 @@ resource aiContrAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', aiUser)
   }
 }
+
+var blobReader = '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1' // Storage Blob Data Reader
+resource blobReaderAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(aiFoundryName, blobReader, searchPrincipalId)
+  scope: resourceGroup()
+  properties: {
+    description: 'Storage Blob Data Reader'
+    principalId: searchPrincipalId
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', blobReader)
+  }
+}
