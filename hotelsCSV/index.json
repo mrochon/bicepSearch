@@ -1,0 +1,75 @@
+
+{
+  "name": "hotels",
+  "fields": [
+    { "name": "id", "type": "Edm.String", "key": true, "filterable": true, "sortable": true },
+    { "name": "name", "type": "Edm.String", "searchable": true, "retrievable": true },
+    { "name": "description", "type": "Edm.String", "searchable": true, "retrievable": true },
+    { "name": "category", "type": "Edm.String", "filterable": true, "sortable": true },
+    { "name": "parkingIncluded", "type": "Edm.Boolean", "filterable": true, "retrievable": true },
+    { "name": "rating", "type": "Edm.Double", "filterable": true, "retrievable": true },
+    { "name": "city", "type": "Edm.String", "filterable": true, "sortable": false, "facetable": true },
+    {
+      "name": "description_vector",
+      "type": "Collection(Edm.Single)",
+      "searchable": true,
+      "retrievable": true,
+      "dimensions": 1536,
+      "vectorSearchProfile": "hotels-text-profile"
+    }
+  ],
+  "semantic": {
+    "defaultConfiguration": "hotels-semantic-configuration",
+    "configurations": [
+      {
+        "name": "hotels-semantic-configuration",
+        "flightingOptIn": false,
+        "rankingOrder": "BoostedRerankerScore",
+        "prioritizedFields": {
+          "titleField": {
+            "fieldName": "name"
+          },
+          "prioritizedContentFields": [
+            {
+              "fieldName": "description"
+            }
+          ],
+          "prioritizedKeywordsFields": []
+        }
+      }
+    ]
+  },
+  "vectorSearch": {
+    "algorithms": [
+      {
+        "name": "hotels-algorithm",
+        "kind": "hnsw",
+        "hnswParameters": {
+          "metric": "cosine",
+          "m": 4,
+          "efConstruction": 400,
+          "efSearch": 500
+        }
+      }
+    ],
+    "profiles": [
+      {
+        "name": "hotels-text-profile",
+        "algorithm": "hotels-algorithm",
+        "vectorizer": "hotels-text-vectorizer"
+      }
+    ],
+    "vectorizers": [
+      {
+        "name": "hotels-text-vectorizer",
+        "kind": "azureOpenAI",
+        "azureOpenAIParameters": {
+          "resourceUri": "https://foundry-hdg4ftyjxaav4.openai.azure.com",
+          "deploymentId": "text-embedding-3-small",
+          "modelName": "text-embedding-3-small"
+        }
+      }
+    ],
+    "compressions": []
+  }
+}

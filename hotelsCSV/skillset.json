@@ -1,0 +1,24 @@
+
+{
+  "name": "hotels-skillset",
+  "description": "Vectorize the description column for CSV rows",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill",
+      "name": "embed-description",
+      "description": "Generate embeddings for description column",
+      "context": "/document",
+      "resourceUri": "https://foundry-hdg4ftyjxaav4.openai.azure.com",
+      "deploymentId": "text-embedding-3-small",
+      "modelName": "text-embedding-3-small", 
+      "inputs": [
+        { "name": "text", "source": "/document/description" }
+      ],
+      "outputs": [
+        { "name": "embedding", "targetName": "description_vector" }
+      ]
+    }
+  ],
+  "cognitiveServices": null,
+  "knowledgeStore": null
+}

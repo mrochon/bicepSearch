@@ -1,0 +1,20 @@
+{
+  "@odata.context": "https://search-hdg4ftyjxaav4.search.windows.net/$metadata#datasources/$entity",
+  "@odata.etag": "\"0x8DE3E86BF69491E\"",
+  "name": "rag-1766097615083-datasource",
+  "description": null,
+  "type": "azureblob",
+  "subtype": null,
+  "indexerPermissionOptions": [],
+  "credentials": {
+    "connectionString": "ResourceId=/subscriptions/7cee9002-39e6-44f8-a673-6f8680f8f4ad/resourceGroups/rg-sports3-hdg4ftyjxaav4/providers/Microsoft.Storage/storageAccounts/storagehdg4ftyjxaav4;"
+  },
+  "container": {
+    "name": "hotels",
+    "query": null
+  },
+  "dataChangeDetectionPolicy": null,
+  "dataDeletionDetectionPolicy": null,
+  "encryptionKey": null,
+  "identity": null
+}

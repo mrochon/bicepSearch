@@ -1,0 +1,25 @@
+
+{
+  "name": "hotels-indexer",
+  "dataSourceName": "rag-1766097615083-datasource", 
+  "targetIndexName": "hotels",
+  "skillsetName": "hotels-skillset",
+  "parameters": {
+    "maxFailedItems": 0,
+    "maxFailedItemsPerBatch": 0,
+    "configuration": {
+      "parsingMode": "delimitedText",
+      "delimitedTextHeaders": "HotelId,HotelName,Description,Category,Tags,ParkingIncluded,LastRenovationDate,Rating,StreetAddress,City,StateProvince,PostalCode,Country,IsDeleted",
+      "delimitedTextDelimiter": ","
+    }
+  },
+  "fieldMappings": [
+    { "sourceFieldName": "HotelId",          "targetFieldName": "id" },
+    { "sourceFieldName": "Name",       "targetFieldName": "name" },
+    { "sourceFieldName": "HotelDdescription", "targetFieldName": "description" },
+    { "sourceFieldName": "Category",          "targetFieldName": "category" },
+    { "sourceFieldName": "ParkingIncluded",       "targetFieldName": "parkingIncluded" },
+    { "sourceFieldName": "City",       "targetFieldName": "city" },    
+    { "sourceFieldName": "Rating", "targetFieldName": "rating" }    
+  ]
+}
