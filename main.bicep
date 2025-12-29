@@ -154,7 +154,8 @@ module searchService 'services/search.bicep' = {
     replicaCount: searchReplicaCount
     sku: searchSkuName
 
-    aiProjectPrincipalId: aiFoundry.outputs.aiProjectPrincipalId   
+    aiProjectPrincipalId: aiFoundry.outputs.aiProjectPrincipalId
+    workspaceId: analytics.outputs.workspaceId
   }
 }
 

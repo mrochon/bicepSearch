@@ -152,3 +152,5 @@ resource avgQpmQuery 'Microsoft.OperationalInsights/querypacks/queries@2023-09-0
   }
 }
 
+output workspaceId string = analyticsWorkspace.id
+output workspaceName string = analyticsWorkspace.name

@@ -111,6 +111,8 @@ namespace MR.Function
 
 ### Notes
 
-1. To upload sample data (e.g. [Health Plan pdfs](https://github.com/Azure-Samples/azure-search-sample-data/tree/main/health-plan) using Azure portal, make sure to give yourself Storgae Bloab Data Contributor role.
+1. To upload sample data (e.g. [Health Plan pdfs](https://github.com/Azure-Samples/azure-search-sample-data/tree/main/health-plan) using Azure portal, make sure to give yourself *Storgae Bloab Data Contributor* role and enable network access from your IP address.
 
-2. To execute searches from the Azure portal, give yourself Search Index Data Reader role.
+2. To execute searches from the Azure portal, give yourself *Search Index Data Reader* role.
+
+3. To view metric assign *Monitoring Reader* role (*Owner* seems not enough!)

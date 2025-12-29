@@ -1,0 +1,24 @@
+
+{
+  "name": "INDEX_NAME-skillset",
+  "description": "Vectorize the description column for CSV rows",
+  "skills": [
+    {
+      "@odata.type": "#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill",
+      "name": "embed-description",
+      "description": "Generate embeddings for description column",
+      "context": "/document",
+      "resourceUri": "OPENAI_ENDPOINT",
+      "deploymentId": "EMBEDDING_DEPLOYMENT_NAME",
+      "modelName": "EMBEDDING_DEPLOYMENT_NAME", 
+      "inputs": [
+        { "name": "text", "source": "/document/description" }
+      ],
+      "outputs": [
+        { "name": "embedding", "targetName": "description_vector" }
+      ]
+    }
+  ],
+  "cognitiveServices": null,
+  "knowledgeStore": null
+}

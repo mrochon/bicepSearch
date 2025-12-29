@@ -1,9 +1,9 @@
 
 {
-  "name": "hotels-indexer",
-  "dataSourceName": "azureblob-1766886410053-datasource", 
-  "targetIndexName": "hotels",
-  "skillsetName": "hotels-skillset",
+  "name": "INDEX_NAME-indexer",
+  "dataSourceName": "INDEX_NAME-datasource",
+  "skillsetName": "INDEX_NAME-skillset",
+  "targetIndexName": "INDEX_NAME-index",
   "parameters": {
     "maxFailedItems": 0,
     "maxFailedItemsPerBatch": 0,

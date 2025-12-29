@@ -3,14 +3,14 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "projectName": {
-      "value": "sports3"
+      "value": "hotels"
     },
     "location": {
       "value": "eastus2"
     },
     "tags": {
       "value": {
-        "azd-env-name": "sports3"
+        "azd-env-name": "hotels"
       }
     },
     "searchSkuName": {

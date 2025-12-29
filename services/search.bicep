@@ -31,6 +31,7 @@ param replicaCount int = 1
 ])
 param semanticSearch string = 'free'
 param aiProjectPrincipalId string
+param workspaceId string
 
 param serviceName string 
 
@@ -80,6 +81,27 @@ resource aiContrAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
     principalId: aiProjectPrincipalId
     principalType: 'ServicePrincipal'
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', svcContributor)
+  }
+}
+
+// Diagnostic settings to send metrics and logs to Log Analytics
+resource searchDiagnostics 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+  name: 'search-diagnostics'
+  scope: search
+  properties: {
+    workspaceId: workspaceId
+    logs: [
+      {
+        categoryGroup: 'allLogs'
+        enabled: true
+      }
+    ]
+    metrics: [
+      {
+        category: 'AllMetrics'
+        enabled: true
+      }
+    ]
   }
 }
 

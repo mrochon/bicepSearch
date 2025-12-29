@@ -1,17 +1,40 @@
 
-# param(
-#   [Parameter(Mandatory = $false)]
-#   [string]$indexName
-# )
+param(
+  [Parameter(Mandatory = $false)]
+  [string]$indexName,
+  
+  [Parameter(Mandatory = $false)]
+  [switch]$generateOnly = $false
+)
 
 $indexName = $args[0]
+
 if (-not $indexName) {
   while (-not $indexName) {
     $indexName = Read-Host "Please enter the index name"
   }
+  if (-not (Test-Path -Path "./indexDefinitions/$indexName")) {
+    Write-Error "The path './indexDefinitions/$indexName' does not exist."
+    $indexName = $null
+  }
 }
+
 function InvokeWithRetry($url, $headers, $body) {
   try {  
+    if($generateOnly) {
+      $output = @{
+        url = $url
+        headers = $headers
+        body = $body
+      } | ConvertTo-Json
+      if (-not (Test-Path -Path "./tmp")) {
+        New-Item -Path "./tmp" -ItemType Directory | Out-Null
+      }
+      $fileName = "./tmp/$($indexName)_$(Get-Random).json"
+      Set-Content -Path $fileName -Value $output
+      Write-Host "Generated file: $fileName"
+      return
+    } 
     Invoke-RestMethod -Uri $url -Method PUT -Headers $headers -Body $body
   } catch {
     $errorJson = @{
@@ -22,7 +45,7 @@ function InvokeWithRetry($url, $headers, $body) {
     Write-Host "Error occurred: $($errorJson)"
     throw $_
   }
-}  
+}
 
 function UpdateBody($body, $indexName, $bicepOutput) {
   $body = $body -replace 'INDEX_NAME', $indexName
@@ -36,38 +59,12 @@ function UpdateBody($body, $indexName, $bicepOutput) {
   return $body
 }
 
-if (-not (Test-Path -Path "./indexDefinitions/$indexName")) {
-  Write-Error "The path './indexDefinitions/$indexName' does not exist."
-  exit 1
-}
-
-$dotEnv = Get-Content -Path "./.env" | Where-Object { $_ -match '=' } | ForEach-Object {
-    $parts = $_ -split '=', 2
-    [PSCustomObject]@{ Key = $parts[0].Trim(); Value = $parts[1].Trim() }
-} | Group-Object -Property Key -AsHashTable -AsString | ForEach-Object {
-    $obj = [PSCustomObject]@{}
-    foreach ($key in $_.Keys) {
-        Add-Member -InputObject $obj -MemberType NoteProperty -Name $key -Value $_[$key].Value
-    }
-    $obj | Add-Member -MemberType NoteProperty -Name 'IndexName' -Value $indexName -Force
-    $obj
-}
-
-
-$dotEnv = $dotEnv[0]
-$appId = $dotEnv.AZURE_CLIENT_ID
-$appSecret = $dotEnv.AZURE_CLIENT_SECRET
-$tenantId = $dotEnv.AZURE_TENANT_ID
-
-$scope = "https://search.azure.com/.default"
-$body = @{
-    grant_type    = "client_credentials"
-    client_id     = $appId
-    client_secret = $appSecret
-    scope      = $scope
-}
-$tokenResponse = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$tenantId/oauth2/v2.0/token" -Body $body
-$token = $tokenResponse.access_token
+# Get access token using DefaultAzureCredential
+$credential = New-Object Azure.Identity.DefaultAzureCredential
+$tokenRequestContext = New-Object Azure.Core.TokenRequestContext
+$tokenRequestContext.Scopes = @("https://search.azure.com/.default")
+$accessToken = $credential.GetToken($tokenRequestContext, [System.Threading.CancellationToken]::None)
+$token = $accessToken.Token
 $headers = @{
   'Authorization' = "Bearer $($token)"
   'Content-Type' = 'application/json'
