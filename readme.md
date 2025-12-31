@@ -54,6 +54,12 @@ az deployment group show \
   --resource-group rg-bicepsearch \
   --name bicepsearch2 
 ```
+### Index data creation
+
+```PowerShell
+$VerbosePreference = "Continue"
+.\new-searchIndex.ps1 -IndexName "hotels"
+```
 
 ### Debugging
 
