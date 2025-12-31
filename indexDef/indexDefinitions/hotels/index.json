@@ -23,7 +23,6 @@
     "configurations": [
       {
         "name": "hotels-semantic-configuration",
-        "flightingOptIn": false,
         "rankingOrder": "BoostedRerankerScore",
         "prioritizedFields": {
           "titleField": {

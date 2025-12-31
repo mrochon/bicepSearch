@@ -1,5 +1,6 @@
 .env
 results/
 generated/
+tmp/
 test*.ps1
 bicepOutput.json
