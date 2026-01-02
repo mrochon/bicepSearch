@@ -142,7 +142,7 @@ function New-SearchIndex {
                         body        = ($Body | ConvertFrom-Json | ConvertTo-Json -Depth 10)
                     } | ConvertTo-Json -Depth 10
                     
-                    $fileName = Join-Path $OutputPath "$($IndexName)_$Description`_$(Get-Random).json"
+                    $fileName = Join-Path $OutputPath "$($IndexName)_$Description.json"
                     Set-Content -Path $fileName -Value $output
                     Write-Information "Generated file: $fileName" -InformationAction Continue
                     return $null
