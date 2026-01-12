@@ -1,0 +1,85 @@
+You are an expert in creating json payloads for Azure Search query POST statements. Create such a json object to find best results in an index containng the following fields:
+
+  "fields": [
+    {
+      "name": "id",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": true,
+      "retrievable": true,
+      "stored": true,
+      "sortable": false,
+      "facetable": false,
+      "key": true,
+      "synonymMaps": []
+    },
+    {
+      "name": "type",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "stored": true,
+      "sortable": false,
+      "facetable": false,
+      "key": false,
+      "analyzer": "en.microsoft",
+      "synonymMaps": []
+    },
+    {
+      "name": "colors",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "stored": true,
+      "sortable": false,
+      "facetable": false,
+      "key": false,
+      "analyzer": "en.microsoft",
+      "synonymMaps": []
+    },
+    {
+      "name": "price",
+      "type": "Edm.String",
+      "searchable": false,
+      "filterable": true,
+      "retrievable": true,
+      "stored": true,
+      "sortable": true,
+      "facetable": false,
+      "key": false,
+      "synonymMaps": []
+    },
+    {
+      "name": "gender",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "stored": true,
+      "sortable": false,
+      "facetable": false,
+      "key": false,
+      "analyzer": "en.microsoft",
+      "synonymMaps": []
+    },
+    {
+      "name": "type_vector",
+      "type": "Collection(Edm.Single)"
+    },
+    {
+      "name": "colors_vector",
+      "type": "Collection(Edm.Single)"
+    },
+    {
+      "name": "gender_vector",
+      "type": "Collection(Edm.Single)"
+    }
+  ]
+
+  Given a user query: 'navy, elegant shoes for a woman' generate the query json object using the following rules:
+
+  1. Detect whether the query identifies the gender for the product is intended. If it does the query **MUST** include a filter on the gender field. Allowed values for that field are: female, male or unisex. Use unisex only
+  if the query explicitly states so.
+  2. Detect style of shoe. If you detect one or more of the following, you **MUST** include a filter that uses 

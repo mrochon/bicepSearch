@@ -1,0 +1,356 @@
+    {
+        "query":{
+            "search": "woman formal grey",
+            "filter": "gender eq 'female'",
+            "count": true,
+            "vectorQueries": [
+                {
+                "kind": "text",
+                "text": "woman formal grey",
+                "fields": "colors_vector"    
+                },    
+                {
+                "kind": "text",
+                "text": "woman formal grey",
+                "fields": "style_vector",
+                "weight": 5.0
+                }
+            ],
+            "debug": "vector",
+            "top": 10
+        },
+    "response": {
+        "@odata.context": "https://search-rlwt3v5evxuy6.search.windows.net/indexes('shoes-index')/$metadata#docs(*)",
+        "@odata.count": 38,
+        "value": [
+            {
+            "@search.score": 0.11492537707090378,
+            "@search.documentDebugInfo": {
+                "semantic": null,
+                "vectors": {
+                "subscores": {
+                    "documentBoost": 1,
+                    "text": {
+                    "searchScore": 2.92146635055542
+                    },
+                    "vectors": [
+                    {
+                        "colors_vector": {
+                        "searchScore": 11.655769348144531,
+                        "vectorSimilarity": 1.914205577501481
+                        }
+                    },
+                    {
+                        "style_vector": {
+                        "searchScore": 9.207780838012695,
+                        "vectorSimilarity": 1.891396198759241
+                        }
+                    }
+                    ]
+                }
+                }
+            },
+            "id": "FM028B",
+            "style": "formal",
+            "colors": "grey charcoal",
+            "price": "149.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.11073723435401917,
+            "@search.documentDebugInfo": {
+                "semantic": null,
+                "vectors": {
+                "subscores": {
+                    "documentBoost": 1,
+                    "text": {
+                    "searchScore": 1.8923234939575195
+                    },
+                    "vectors": [
+                    {
+                        "colors_vector": {
+                        "searchScore": 10.495319366455078,
+                        "vectorSimilarity": 1.904719431102194
+                        }
+                    },
+                    {
+                        "style_vector": {
+                        "searchScore": 9.207780838012695,
+                        "vectorSimilarity": 1.891396198759241
+                        }
+                    }
+                    ]
+                }
+                }
+            },
+            "id": "FM038L",
+            "style": "formal",
+            "colors": "black silver",
+            "price": "169.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.10882744938135147,
+            "@search.documentDebugInfo": {
+                "semantic": null,
+                "vectors": {
+                "subscores": {
+                    "documentBoost": 1,
+                    "text": {
+                    "searchScore": 1.8108500242233276
+                    },
+                    "vectors": [
+                    {
+                        "colors_vector": {
+                        "searchScore": 10.322565078735352,
+                        "vectorSimilarity": 1.9031248539125207
+                        }
+                    },
+                    {
+                        "style_vector": {
+                        "searchScore": 9.207780838012695,
+                        "vectorSimilarity": 1.891396198759241
+                        }
+                    }
+                    ]
+                }
+                }
+            },
+            "id": "FM008H",
+            "style": "formal",
+            "colors": "black burgundy",
+            "price": "159.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.10846176743507385,
+            "@search.documentDebugInfo": {
+                "semantic": null,
+                "vectors": {
+                "subscores": {
+                    "documentBoost": 1,
+                    "text": {
+                    "searchScore": 1.5532582998275757
+                    },
+                    "vectors": [
+                    {
+                        "colors_vector": {
+                        "searchScore": 8.536523818969727,
+                        "vectorSimilarity": 1.882856298277079
+                        }
+                    },
+                    {
+                        "style_vector": {
+                        "searchScore": 9.207780838012695,
+                        "vectorSimilarity": 1.891396198759241
+                        }
+                    }
+                    ]
+                }
+                }
+            },
+            "id": "FM058F",
+            "style": "formal",
+            "colors": "midnight navy",
+            "price": "159.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.105855293571949,
+            "@search.documentDebugInfo": {
+                "semantic": null,
+                "vectors": {
+                "subscores": {
+                    "documentBoost": 1,
+                    "text": {
+                    "searchScore": 1.4885433912277222
+                    },
+                    "vectors": [
+                    {
+                        "colors_vector": {
+                        "searchScore": 9.379920959472656,
+                        "vectorSimilarity": 1.8933892935430214
+                        }
+                    },
+                    {
+                        "style_vector": {
+                        "searchScore": 9.207780838012695,
+                        "vectorSimilarity": 1.891396198759241
+                        }
+                    }
+                    ]
+                }
+                }
+            },
+            "id": "FM073U",
+            "style": "formal",
+            "colors": "onyx black",
+            "price": "209.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.1050616055727005,
+            "@search.documentDebugInfo": {
+                "semantic": null,
+                "vectors": {
+                "subscores": {
+                    "documentBoost": 1,
+                    "text": {
+                    "searchScore": 1.4885433912277222
+                    },
+                    "vectors": [
+                    {
+                        "colors_vector": {
+                        "searchScore": 10.014601707458496,
+                        "vectorSimilarity": 1.9001458041755932
+                        }
+                    },
+                    {
+                        "style_vector": {
+                        "searchScore": 9.207780838012695,
+                        "vectorSimilarity": 1.891396198759241
+                        }
+                    }
+                    ]
+                }
+                }
+            },
+            "id": "FM088J",
+            "style": "formal",
+            "colors": "ebony black",
+            "price": "199.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.10027936100959778,
+            "@search.documentDebugInfo": {
+                "semantic": null,
+                "vectors": {
+                "subscores": {
+                    "documentBoost": 1,
+                    "text": {
+                    "searchScore": 1.23434579372406
+                    },
+                    "vectors": [
+                    {
+                        "colors_vector": {
+                        "searchScore": 16.16315460205078,
+                        "vectorSimilarity": 1.938130889382626
+                        }
+                    },
+                    {
+                        "style_vector": {
+                        "searchScore": 6.7379865646362305,
+                        "vectorSimilarity": 1.8515877123815565
+                        }
+                    }
+                    ]
+                }
+                }
+            },
+            "id": "SL005E",
+            "style": "slippers",
+            "colors": "pink purple grey",
+            "price": "24.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.09792430698871613,
+            "@search.documentDebugInfo": {
+                "semantic": null,
+                "vectors": {
+                "subscores": {
+                    "documentBoost": 1,
+                    "text": {
+                    "searchScore": 1.7427700757980347
+                    },
+                    "vectors": [
+                    {
+                        "colors_vector": {
+                        "searchScore": 13.335125923156738,
+                        "vectorSimilarity": 1.9250100819622948
+                        }
+                    },
+                    {
+                        "style_vector": {
+                        "searchScore": 5.951381683349609,
+                        "vectorSimilarity": 1.8319717918953617
+                        }
+                    }
+                    ]
+                }
+                }
+            },
+            "id": "SD082D",
+            "style": "sandals",
+            "colors": "platinum silver grey",
+            "price": "61.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.08809705823659897,
+            "@search.documentDebugInfo": {
+                "semantic": null,
+                "vectors": {
+                "subscores": {
+                    "documentBoost": 1,
+                    "text": {
+                    "searchScore": 0.8949891328811646
+                    },
+                    "vectors": [
+                    {
+                        "colors_vector": {
+                        "searchScore": 15.045440673828125,
+                        "vectorSimilarity": 1.9335346819226424
+                        }
+                    },
+                    {
+                        "style_vector": {
+                        "searchScore": 5.08345890045166,
+                        "vectorSimilarity": 1.803283547760925
+                        }
+                    }
+                    ]
+                }
+                }
+            },
+            "id": "SN036J",
+            "style": "sneakers",
+            "colors": "burgundy grey white",
+            "price": "104.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.08802217245101929,
+            "@search.documentDebugInfo": {
+                "semantic": null,
+                "vectors": {
+                "subscores": {
+                    "documentBoost": 1,
+                    "text": null,
+                    "vectors": [
+                    {
+                        "colors_vector": {
+                        "searchScore": 11.113730430603027,
+                        "vectorSimilarity": 1.9100212114875148
+                        }
+                    },
+                    {
+                        "style_vector": {
+                        "searchScore": 6.7379865646362305,
+                        "vectorSimilarity": 1.8515877123815565
+                        }
+                    }
+                    ]
+                }
+                }
+            },
+            "id": "SL080B",
+            "style": "slippers",
+            "colors": "rose pink mauve",
+            "price": "24.99",
+            "gender": "female"
+            }
+        ]
+        }
+    }

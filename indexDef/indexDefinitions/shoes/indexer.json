@@ -1,0 +1,60 @@
+{
+  "@odata.context": "https://search-uxyrvemtzmwv6.search.windows.net/$metadata#indexers/$entity",
+  "@odata.etag": "\"0x8DDAA307B373CB4\"",
+  "name": "INDEX_NAME-indexer",
+  "description": null,
+  "dataSourceName": "INDEX_NAME-datasource",
+  "skillsetName": "INDEX_NAME-skillset",
+  "targetIndexName": "INDEX_NAME-index",
+  "disabled": null,
+  "schedule": null,
+  "parameters": {
+    "batchSize": null,
+    "maxFailedItems": null,
+    "maxFailedItemsPerBatch": null,
+    "configuration": {
+      "dataToExtract": "contentAndMetadata",
+      "parsingMode": "json"
+    }
+  },
+  "fieldMappings": [
+    {
+      "sourceFieldName": "id",
+      "targetFieldName": "id",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "type",
+      "targetFieldName": "style",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "colors",
+      "targetFieldName": "colors",
+      "mappingFunction": null
+    },
+    {
+      "sourceFieldName": "price",
+      "targetFieldName": "price",
+      "mappingFunction": null
+    }
+  ],
+  "outputFieldMappings": [
+      {
+        "sourceFieldName": "/document/genderEmbedding/*",
+        "targetFieldName": "gender_vector",
+        "mappingFunction": null
+      },    
+      {
+        "sourceFieldName": "/document/colorsEmbedding/*",
+        "targetFieldName": "colors_vector",
+        "mappingFunction": null
+      },
+      {
+        "sourceFieldName": "/document/styleEmbedding/*",
+        "targetFieldName": "style_vector",
+        "mappingFunction": null
+      }      
+  ],
+  "encryptionKey": null
+}

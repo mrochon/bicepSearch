@@ -6,84 +6,74 @@
     {
       "name": "id",
       "type": "Edm.String",
-      "searchable": false,
+      "searchable": true,
       "filterable": true,
       "retrievable": true,
+      "stored": true,
+      "sortable": false,
+      "facetable": false,      
       "key": true
     },
     {
-      "name": "url",
+      "name": "type",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false,       
+      "analyzer": "en.microsoft"
+    },
+    {
+      "name": "colors",
+      "type": "Edm.String",
+      "searchable": true,
+      "filterable": false,
+      "retrievable": true,
+      "sortable": false,
+      "facetable": false,       
+      "analyzer": "en.microsoft"
+    },
+    {
+      "name": "price",
       "type": "Edm.String",
       "searchable": false,
       "filterable": true,
       "retrievable": true,
       "stored": true,
       "sortable": true,
-      "facetable": true,
-      "key": false,
-      "synonymMaps": []
+      "facetable": false
     },
     {
-      "name": "title",
+      "name": "gender",
       "type": "Edm.String",
       "searchable": true,
       "filterable": false,
       "retrievable": true,
-      "stored": true,
       "sortable": false,
-      "facetable": false,
-      "key": false,
-      "analyzer": "standard.lucene",
-      "synonymMaps": []
+      "facetable": false,       
+      "analyzer": "en.microsoft"
     },
     {
-      "name": "description",
-      "type": "Edm.String",
-      "searchable": true,
-      "filterable": false,
-      "retrievable": true,
-      "stored": true,
-      "sortable": false,
-      "facetable": false,
-      "key": false,
-      "analyzer": "standard.lucene",
-      "synonymMaps": []
-    },
-    {
-      "name": "ingredients",
-      "type": "Collection(Edm.String)",
-      "searchable": true,
-      "filterable": false,
-      "retrievable": true,
-      "stored": true,
-      "sortable": false,
-      "facetable": false,
-      "key": false,
-      "analyzer": "standard.lucene",
-      "synonymMaps": []
-    },
-    {
-      "name": "metadata_storage_name",
-      "type": "Edm.String",
-      "searchable": false,
-      "filterable": true,
-      "retrievable": true,
-      "stored": true,
-      "sortable": true,
-      "facetable": true,
-      "key": false,
-      "synonymMaps": []
-    },
-    {
-      "name": "description_vector",
+      "name": "type_vector",
       "type": "Collection(Edm.Single)",
       "searchable": true,
-      "filterable": false,
-      "retrievable": true,
-      "stored": true,
-      "sortable": false,
-      "facetable": false,
-      "key": false,
+      "dimensions": 1536,
+      "vectorSearchProfile": "vectorProfile",
+      "synonymMaps": []
+    },
+    {
+      "name": "colors_vector",
+      "type": "Collection(Edm.Single)",
+      "searchable": true,
+      "dimensions": 1536,
+      "vectorSearchProfile": "vectorProfile",
+      "synonymMaps": []
+    },   
+        {
+      "name": "gender_vector",
+      "type": "Collection(Edm.Single)",
+      "searchable": true,
       "dimensions": 1536,
       "vectorSearchProfile": "vectorProfile",
       "synonymMaps": []
@@ -104,19 +94,19 @@
       {
         "name": "semantic-configuration",
         "prioritizedFields": {
-          "titleField": {
-            "fieldName": "title"
-          },
           "prioritizedContentFields": [
             {
-              "fieldName": "description"
+              "fieldName": "gender"
+            },
+            {
+              "fieldName": "type"
             }
           ],
           "prioritizedKeywordsFields": []
         }
       }
     ]
-  },
+  },  
   "vectorSearch": {
     "algorithms": [
       {
@@ -134,6 +124,7 @@
       {
         "name": "vectorProfile",
         "algorithm": "algorithm",
+        "compression": "compressionConfig",        
         "vectorizer": "vectorizer"
       }
     ],
@@ -142,16 +133,23 @@
         "name": "vectorizer",
         "kind": "azureOpenAI",
         "azureOpenAIParameters": {
-          "resourceUri": "https://ai-uxyrvemtzmwv6.openai.azure.com",
-          "deploymentId": "text-embedding-3-small",
-          "modelName": "text-embedding-3-small",
-          "authIdentity": {
-            "@odata.type": "#Microsoft.Azure.Search.DataUserAssignedIdentity",
-            "userAssignedIdentity": "SUBSCRIPTION_ID/resourcegroups/RESOURCEGROUP_NAME/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SEARCH_IDENTITY_NAME"
-          }
+          "resourceUri": "OPENAI_ENDPOINT",
+          "deploymentId": "EMBEDDING_DEPLOYMENT_NAME",
+          "modelName": "EMBEDDING_DEPLOYMENT_NAME"
         }
       }
     ],
-    "compressions": []
+    "compressions": [
+      {
+        "name": "compressionConfig",
+        "kind": "binaryQuantization",
+        "rescoringOptions": {
+          "defaultOversampling": 2.0,
+          "enableRescoring": true,
+          "rescoreStorageMethod": "discardOriginals"
+        },
+        "truncationDimension": null
+      }      
+    ]
   }
 }

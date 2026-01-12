@@ -135,15 +135,15 @@ function New-SearchIndex {
                     if (-not (Test-Path -Path $OutputPath)) {
                         New-Item -Path $OutputPath -ItemType Directory | Out-Null
                     }
-                    $output = @{
-                        description = $Description
-                        url         = $Url
-                        headers     = $Headers
-                        body        = ($Body | ConvertFrom-Json | ConvertTo-Json -Depth 10)
-                    } | ConvertTo-Json -Depth 10
+                    # $output = @{
+                    #     description = $Description
+                    #     url         = $Url
+                    #     headers     = $Headers
+                    #     body        = ($Body | ConvertFrom-Json | ConvertTo-Json -Depth 10)
+                    # } | ConvertTo-Json -Depth 10
                     
                     $fileName = Join-Path $OutputPath "$($IndexName)_$Description.json"
-                    Set-Content -Path $fileName -Value $output
+                    Set-Content -Path $fileName -Value $body
                     Write-Information "Generated file: $fileName" -InformationAction Continue
                     return $null
                 }

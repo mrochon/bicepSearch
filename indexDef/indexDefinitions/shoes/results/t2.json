@@ -1,0 +1,107 @@
+{
+    "query":     {
+        "search": "woman formal grey",
+        "filter": "gender eq 'female'",
+        "count": true,
+        "vectorQueries": [
+            {
+            "kind": "text",
+            "text": "woman formal grey",
+            "fields": "colors_vector"    
+            },    
+            {
+            "kind": "text",
+            "text": "woman formal grey",
+            "fields": "style_vector",
+            "weight": 5.0
+            }
+        ],
+        "top": 10
+    },
+    "response": {
+        "@odata.context": "https://search-rlwt3v5evxuy6.search.windows.net/indexes('shoes-index')/$metadata#docs(*)",
+        "@odata.count": 38,
+        "value": [
+            {
+            "@search.score": 0.11492537707090378,
+            "id": "FM028B",
+            "style": "formal",
+            "colors": "grey charcoal",
+            "price": "149.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.11073723435401917,
+            "id": "FM038L",
+            "style": "formal",
+            "colors": "black silver",
+            "price": "169.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.10882744938135147,
+            "id": "FM008H",
+            "style": "formal",
+            "colors": "black burgundy",
+            "price": "159.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.10846176743507385,
+            "id": "FM058F",
+            "style": "formal",
+            "colors": "midnight navy",
+            "price": "159.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.105855293571949,
+            "id": "FM073U",
+            "style": "formal",
+            "colors": "onyx black",
+            "price": "209.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.1050616055727005,
+            "id": "FM088J",
+            "style": "formal",
+            "colors": "ebony black",
+            "price": "199.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.10027936100959778,
+            "id": "SL005E",
+            "style": "slippers",
+            "colors": "pink purple grey",
+            "price": "24.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.09792430698871613,
+            "id": "SD082D",
+            "style": "sandals",
+            "colors": "platinum silver grey",
+            "price": "61.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.08809705823659897,
+            "id": "SN036J",
+            "style": "sneakers",
+            "colors": "burgundy grey white",
+            "price": "104.99",
+            "gender": "female"
+            },
+            {
+            "@search.score": 0.08802217245101929,
+            "id": "SL080B",
+            "style": "slippers",
+            "colors": "rose pink mauve",
+            "price": "24.99",
+            "gender": "female"
+            }
+        ]
+        }
+}

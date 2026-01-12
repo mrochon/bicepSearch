@@ -1,0 +1,15 @@
+{
+  "name": "INDEX_NAME-datasource",
+  "description": "INDEX_NAME",
+  "type": "azureblob",
+  "credentials": {
+    "connectionString": "ResourceId=SUBSCRIPTION_ID/resourceGroups/RESOURCEGROUP_NAME/providers/Microsoft.Storage/storageAccounts/STORAGEACCOUNT_NAME;"
+  },
+  "container": {
+    "name": "samples",
+    "query": null
+  },
+  "dataChangeDetectionPolicy": null,
+  "dataDeletionDetectionPolicy": null,
+  "encryptionKey": null
+}
