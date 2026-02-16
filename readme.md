@@ -30,33 +30,34 @@ This deployment creates the following objects:
 1. In the **json** folder, edit json definitions of your index, indexer, skillset, synonym map and data source. Do not modify the capitalized strings (e.g. PROJECT_NAME). Their values will be set by your bicep parameters.
 2. Run **main.bicep** deployment
 
-```Bash
+```PowerShell
 az login [--tenant <domain>]
-az deployment sub create --name searchDeployment \
-  --template-file main.bicep \
-  --parameters @main.parameters.json \
-  --location 'eastus' \
-  --subscription '7cee9002-39e6-44f8-a673-6f8680f8f4ad' \
+az deployment sub create --name searchDeployment `
+  --template-file main.bicep `
+  --parameters main.parameters.json `
+  --location 'eastus' `
+  --subscription '7cee9002-39e6-44f8-a673-6f8680f8f4ad' `
   --query properties.outputs > bicepOutput.json
 ```
 
 ```
-az deployment sub delete --name rg-searchbicep2
+az deployment sub delete --name rg-hotels-rlwt3v5evxuy6
 ```
 
 ```
-az deployment subscription show \
-  --subscription '7cee9002-39e6-44f8-a673-6f8680f8f4ad' \
-  --name bicepsearch2 \
+az deployment subscription show `
+  --subscription '7cee9002-39e6-44f8-a673-6f8680f8f4ad' `
+  --name bicepsearch2 `
   --query properties.outputs
 
-az deployment group show \
-  --resource-group rg-bicepsearch \
+az deployment group show `
+  --resource-group rg-bicepsearch `
   --name bicepsearch2 
 ```
 ### Index data creation
 
 ```PowerShell
+cd indexDef
 $VerbosePreference = "Continue"
 .\new-searchIndex.ps1 -IndexName "hotels"
 ```
@@ -122,3 +123,12 @@ namespace MR.Function
 2. To execute searches from the Azure portal, give yourself *Search Index Data Reader* role.
 
 3. To view metric assign *Monitoring Reader* role (*Owner* seems not enough!)
+
+4. To view query traces: enable diagnostics (Logging)
+```KQL
+
+
+4. To purge a deleted resource:
+```
+az resource delete --ids '/subscriptions/7cee9002-39e6-44f8-a673-6f8680f8f4ad/providers/Microsoft.CognitiveServices/locations/eastus2/resourceGroups/rg-hotels-rlwt3v5evxuy6/deletedAccounts/foundry-rlwt3v5evxuy6'
+```

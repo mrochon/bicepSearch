@@ -1,6 +1,6 @@
 param aiFoundryName string 
 param aiProjectName string 
-param location string = 'eastus2'
+param location string = resourceGroup().location
 param deployments array
 param tags object = {}
 

@@ -69,19 +69,18 @@ param deployments array = [
       name: 'Standard'
       capacity: 50
     }
-  }
-  // {
-  //   name: 'gpt-4.1-mini'
-  //   model: {
-  //     format: 'OpenAI'
-  //     name: 'gpt-4.1-mini'
-  //     version: '2025-04-14'
-  //   }
-  //   sku : {
-  //     name: 'GlobalStandard'
-  //     capacity: 150
-  //   }
-  // }  
+  },{
+    name: 'gpt-4.1-mini'
+    model: {
+      format: 'OpenAI'
+      name: 'gpt-4.1-mini'
+      version: '2025-04-14'
+    }
+    sku : {
+      name: 'GlobalStandard'
+      capacity: 150
+    }
+  }  
 ]
 
 var uniqueName = toLower(uniqueString(subscription().id, projectName))
